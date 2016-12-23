@@ -5,6 +5,32 @@ var commonMethod={};
 var config={};
 config.TOKEN_SECRET =process.env.TOKEN_SECRET || 'nk235jaih535lhgdszhdfb-89ddsaj';
 
+/**       Mehtod is for reading employee HR data        **/
+commonMethod.readEmployeeByFieldData = function(engineerId,field){
+  return new Promise(function(resolve,reject){
+  var ref=firebase.database().ref("employee/"+engineerId);
+  ref.child(field).once("value").then(function(data){
+    if (data.val()!==null) {
+    resolve(data.val());
+  }else {
+    reject();
+  }
+});
+});
+};
+
+/**       Mehtod is for inserting employee Attendance Data in firebase          **/
+commonMethod.createEmployeeAttendance=function(engineerId,date,obj){
+return new Promise(function(resolve,reject){
+  var ref = firebase.database().ref("employeeAttendance/"+engineerId);
+  ref.child(date).set(obj);
+  console.log();
+  ref.once("value",function(data){
+    resolve("Data");
+  });
+});
+};
+
 commonMethod.readEmployeeAttendance=function(engineerId,date){
   return new Promise(function(resolve,reject){
     var ref = firebase.database().ref("employeeAttendance/"+engineerId);
