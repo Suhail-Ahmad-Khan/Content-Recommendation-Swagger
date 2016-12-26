@@ -14,4 +14,8 @@ var router = express.Router();
   router.use("/readEmployeeTrackingData",require("./readEmployeeTrackingData"));
 
   router.use("/updateEmployeeHRData",require("./updateEmployeeHRData"));
+  router.use("/updateEmployeePersonalData",require("./updateEmployeePersonalData"));
+  router.use("/updateEmployeeProfileData",require("./updateEmployeeProfileData"));
+  router.use("/updateEmployeeTrackingData",require("./updateEmployeeTrackingData"));
+  router.use("/updateEmployeeBankData",require("./updateEmployeeBankData"));
 module.exports = router;

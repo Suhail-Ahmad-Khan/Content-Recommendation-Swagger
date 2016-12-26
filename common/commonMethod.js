@@ -6,6 +6,18 @@ var config={};
 config.TOKEN_SECRET =process.env.TOKEN_SECRET || 'nk235jaih535lhgdszhdfb-89ddsaj';
 
 /**       Mehtod is for reading employee HR data        **/
+commonMethod.updateEmployeeData = function(engineerId,field,obj){
+  return new Promise(function(resolve,reject){
+var ref= firebase.database().ref("employee/"+engineerId);
+ref.child(field).update(obj).then(function(){
+resolve();
+}).catch(function(){
+reject();
+});
+
+});
+};
+
 commonMethod.readEmployeeByFieldData = function(engineerId,field){
   return new Promise(function(resolve,reject){
   var ref=firebase.database().ref("employee/"+engineerId);
