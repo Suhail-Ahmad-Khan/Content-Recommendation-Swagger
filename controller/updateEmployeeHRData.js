@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var commonMethod = require("../common/commonMethod");
+var employeeSnapshotEvent = require("../common/events");
 
 router.put("/",function(req,res){
   try {
@@ -20,6 +21,7 @@ router.put("/",function(req,res){
     obj.contractSignDate = temp.contractSignDate;
     obj.initiateTransfer = temp.initiateTransfer;
   commonMethod.updateEmployeeData(temp.engineerId,"hrData",obj).then(function(){
+    employeeSnapshotEvent.updateEmployeeHRSnapshot(temp.engineerId,obj);
     res.send({"token":temp.token,"status":200,"message":"Successfully Updated"});
   });
 } catch (e) {

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var commonMethod = require("../common/commonMethod");
+var employeeSnapshotEvent = require("../common/events");
 
 router.put("/",function(req,res){
   try {
@@ -17,6 +18,7 @@ router.put("/",function(req,res){
     obj.mumbaiAddress = temp.mumbaiAddress;
     obj.permenantAddress = temp.permenantAddress;
   commonMethod.updateEmployeeData(temp.engineerId,"personal",obj).then(function(){
+    employeeSnapshotEvent.updateEmployeePersonalSnapshot(temp.engineerId,obj);
     res.send({"token":temp.token,"status":200,"message":"Successfully Updated"});
   });
 } catch (e) {

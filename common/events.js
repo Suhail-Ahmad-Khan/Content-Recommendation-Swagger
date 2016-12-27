@@ -3,6 +3,7 @@ var util = require('util');
 var firebase = require("../config/firebase.js");
 var redisClient = require('redis').createClient();
 
+
 function custEvent(){
 var self = this;
 EventEmitter.call(this);
@@ -28,6 +29,33 @@ module.exports = myCustEvent;
         myCustEvent.emit("employeeSnapshot",tempObj);
       }
 });
+};
+custEvent.prototype.updateEmployeeHRSnapshot = function(engineerId,obj){
+  redisClient.hgetall("employeeSnapshot",function(error,employeeData){
+  var temp =JSON.parse(employeeData[engineerId]);
+  temp.status = obj.status;
+  temp.company = obj.company;
+  temp.blStartDate= obj.blStartDate;
+  temp.companyJoinDate = obj.companyJoinDate;
+  temp.companyLeaveDate= obj.companyLeaveDate;
+  var  tempObj ={};
+  tempObj[engineerId]=JSON.stringify(temp);
+  redisClient.hmset("employeeSnapshot",tempObj);
+  });
+
+};
+
+custEvent.prototype.updateEmployeePersonalSnapshot = function(engineerId,obj){
+  redisClient.hgetall("employeeSnapshot",function(error,employeeData){
+  var temp =JSON.parse(employeeData[engineerId]);
+  temp.employeeName = obj.employeeName;
+  temp.mobile = obj.mobile;
+  temp.emailId= obj.emailId;
+  var  tempObj ={};
+    tempObj[engineerId]=JSON.stringify(temp);
+    redisClient.hmset("employeeSnapshot",tempObj);
+  });
+
 };
 
 
