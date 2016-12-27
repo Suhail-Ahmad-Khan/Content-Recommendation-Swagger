@@ -10,7 +10,7 @@ router.put("/",function(req,res){
     obj.blStartDate=temp.blStartDate;
     obj.hiringCity=temp.hiringCity;
     obj.fellowshipPeriod = temp.fellowshipPeriod;
-    obj.status = temp.status;
+    obj.employeeStatus = temp.employeeStatus;
     obj.company = temp.company;
     obj.companyJoinDate = temp.companyJoinDate;
     obj.companyLeaveDate = temp.companyLeaveDate;

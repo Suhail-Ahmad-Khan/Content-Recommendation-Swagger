@@ -33,7 +33,7 @@ module.exports = myCustEvent;
 custEvent.prototype.updateEmployeeHRSnapshot = function(engineerId,obj){
   redisClient.hgetall("employeeSnapshot",function(error,employeeData){
   var temp =JSON.parse(employeeData[engineerId]);
-  temp.status = obj.status;
+  temp.employeeStatus = obj.employeeStatus;
   temp.company = obj.company;
   temp.blStartDate= obj.blStartDate;
   temp.companyJoinDate = obj.companyJoinDate;
@@ -67,7 +67,7 @@ function readEmployeeSnapshot(callback) {
     for(var key in data){
         var tempObj = {};
         tempObj.employeeName = data[key].personal.employeeName;
-        tempObj.status = data[key].hrData.status;//"Fellowship";//data[key].
+        tempObj.employeeStatus = data[key].hrData.employeeStatus;//"Fellowship";//data[key].
         tempObj.company = data[key].hrData.company; //"BridgeLabz";
         tempObj.mobile = data[key].personal.mobile;
         tempObj.emailId = data[key].personal.emailId;
