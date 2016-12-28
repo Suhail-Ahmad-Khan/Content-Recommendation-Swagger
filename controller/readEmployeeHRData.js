@@ -6,7 +6,6 @@ var deriveDataEvent = require("../common/events");
 router.get("/",function(req,res){
   var tempData = req.query;
 commonMethod.readEmployeeByFieldData(tempData.engineerId,"hrData").then(function(data){
-  console.log(data);
   var tempObj={};
   tempObj.hrData=data;
   tempObj.token=tempData.token;

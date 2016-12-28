@@ -4,9 +4,9 @@ var commonMethod = require("../common/commonMethod");
 var deriveDataEvent = require("../common/events");
 
 router.get("/",function(req,res){
+  try {
   var tempData = req.query;
 commonMethod.readEmployeeByFieldData(tempData.engineerId,"tracking").then(function(data){
-  console.log(data);
   var tempObj={};
   tempObj.trackingData=data;
   tempObj.token=tempData.token;
@@ -18,6 +18,9 @@ commonMethod.readEmployeeByFieldData(tempData.engineerId,"tracking").then(functi
 }).catch(function(){
   res.status(404).send("engineerId invalid");
 });
+} catch (e) {
+  res.status(304).send("Bad Parameter");
+}
 });
 
 module.exports=router;

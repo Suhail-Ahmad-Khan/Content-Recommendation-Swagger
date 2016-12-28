@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var commonMethod = require("../common/commonMethod");
+var deriveDataEvent = require("../common/events");
 
 router.post("/", function(req, res) {
     try {
@@ -11,8 +12,10 @@ router.post("/", function(req, res) {
         temp.punchIn = tempData.punchIn;
         temp.punchOut = tempData.punchOut;
         temp.reason = tempData.reason;
+
         var date = commonMethod.getFullTimeStamp(tempData.timeStamp);
         commonMethod.createEmployeeAttendance(tempData.engineerId, date,temp).then(function() {
+          deriveDataEvent.creatEmployeeUnmarkedAttendance(tempData.engineerId, date);
             res.send({
                 token: tempData.token,
                 engineerId: tempData.engineerId,

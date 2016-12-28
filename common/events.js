@@ -30,6 +30,27 @@ module.exports = myCustEvent;
       }
 });
 };
+
+/****       creatEmployeeUnmarkedAttendance Method       *****/
+custEvent.prototype.creatEmployeeUnmarkedAttendance =function(engineerId,date){
+  var obj={};
+  redisClient.hgetall("employeeUnmarkedAttendance",function(error,employeeUnmarkedAttendance){
+    if (employeeUnmarkedAttendance === null || employeeUnmarkedAttendance[date]===undefined) {
+      var ref=firebase.database().ref("employee");
+      ref.once("value",function(data){
+      var obj={};
+      obj[date]=JSON.stringify(removeArrayData(Object.keys(data.val()),engineerId));
+      redisClient.hmset("employeeUnmarkedAttendance",obj);
+      });
+    }else {
+      var unmarkedObj = removeArrayData(JSON.parse(employeeUnmarkedAttendance[date]),engineerId);
+          employeeUnmarkedAttendance[date]=JSON.stringify(unmarkedObj);
+          redisClient.hmset("employeeUnmarkedAttendance",employeeUnmarkedAttendance);
+    }
+  });
+};
+
+/****            updateEmployeeHRSnapshot Method              ****/
 custEvent.prototype.updateEmployeeHRSnapshot = function(engineerId,obj){
   redisClient.hgetall("employeeSnapshot",function(error,employeeData){
   var temp =JSON.parse(employeeData[engineerId]);
@@ -42,9 +63,9 @@ custEvent.prototype.updateEmployeeHRSnapshot = function(engineerId,obj){
   tempObj[engineerId]=JSON.stringify(temp);
   redisClient.hmset("employeeSnapshot",tempObj);
   });
-
 };
 
+/*****         updateEmployeePersonalSnapshot Method        *****/
 custEvent.prototype.updateEmployeePersonalSnapshot = function(engineerId,obj){
   redisClient.hgetall("employeeSnapshot",function(error,employeeData){
   var temp =JSON.parse(employeeData[engineerId]);
@@ -58,6 +79,15 @@ custEvent.prototype.updateEmployeePersonalSnapshot = function(engineerId,obj){
 
 };
 
+function removeArrayData(array,element) {
+  var index =array.indexOf(element);
+      if(index>=0) {
+          array.splice(index, 1); //deleting the attendance and making it marked
+          return array;
+      }else {
+        return array;
+      }
+}
 
 function readEmployeeSnapshot(callback) {
   var ref = firebase.database().ref("employee");

@@ -2,11 +2,11 @@ var express = require('express');
 var router = express.Router();
 var commonMethod = require("../common/commonMethod");
 var deriveDataEvent = require("../common/events");
-
 router.get("/",function(req,res){
+  try {
+
   var tempData = req.query;
 commonMethod.readEmployeeByFieldData(tempData.engineerId,"personal").then(function(data){
-  console.log(data);
   var tempObj={};
   tempObj.personalData=data;
   tempObj.token=tempData.token;
@@ -18,6 +18,9 @@ commonMethod.readEmployeeByFieldData(tempData.engineerId,"personal").then(functi
 }).catch(function(){
   res.status(304).send("engineerId invalid");
 });
+} catch (e) {
+  res.status(304).send("Bad Parameter");
+}
 });
 
 module.exports=router;

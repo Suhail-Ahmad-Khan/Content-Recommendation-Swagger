@@ -4,6 +4,8 @@ var commonMethod = require("../common/commonMethod");
 var deriveDataEvent = require("../common/events");
 
 router.get("/", function(req, res) {
+  try {
+
     res.send({
         'attendanceSummary': {
             'marked': '67',
@@ -18,6 +20,9 @@ router.get("/", function(req, res) {
         },
         'timeStamp': '1477308028'
     });
+  } catch (e) {
+    res.status(304).send("Bad Parameter");
+  }
 });
 
 module.exports = router;
