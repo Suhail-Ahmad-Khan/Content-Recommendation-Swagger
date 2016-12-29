@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var firebase = require("../config/firebase.js");
 var commonMethod = require("../common/commonMethod");
 /**  **/
 router.get("/",function(req,res){

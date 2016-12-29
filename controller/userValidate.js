@@ -3,6 +3,7 @@ var router = express.Router();
 var firebase = require("../config/firebase.js");
 var commonMethod = require("../common/commonMethod");
 
+
 router.post("/",function(req,res){
   var email = req.body.emailId;
   try {
