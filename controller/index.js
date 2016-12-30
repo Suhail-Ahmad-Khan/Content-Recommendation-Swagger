@@ -20,5 +20,6 @@ var router = express.Router();
   router.use("/updateEmployeeBankData",require("./updateEmployeeBankData"));
 
   router.use("/readUnmarkedAttendanceSummary",require("./readUnmarkedAttendanceSummary"));
+  router.use("/readMonthlyAttendanceSummary",require("./readMonthlyAttendanceSummary"));
   router.use("/readDashboardData",require("./readDashboardData"));
 module.exports = router;

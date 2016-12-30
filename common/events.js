@@ -15,6 +15,7 @@ var myCustEvent = new custEvent();
 
 module.exports = myCustEvent;
 
+
 /****          employeeSnapshot Method       ****/
 custEvent.prototype.employeeSnapshot = function(tempObj, engineerId) {
     redisClient.hgetall("employeeSnapshot", function(error, employeeData) {
@@ -43,9 +44,14 @@ custEvent.prototype.readEmployeeSnapshot = function(engineerId){
   });
 });
 }
-
+custEvent.prototype.readTotalEmployee = function(){
+redisClient.hgetall("employeeSnapshot", function(error, employeeData) {
+  if(employeeData !==null)
+  myCustEvent.emit("totalEmployee",Object.keys(employeeData).length);
+});
+};
 /*****           readEmployeeUnmarkedAttendance Method    *****/
-custEvent.prototype.readEmployeeUnmarkedAttendance = function(date) {
+custEvent.prototype.readEmployeeUnmarkedAttendance = function(date,i) {
   return new Promise(function(resolve, reject) {
         redisClient.hgetall("employeeUnmarkedAttendance", function(error, employeeUnmarkedAttendance) {
                     if (employeeUnmarkedAttendance === null || employeeUnmarkedAttendance[date] === undefined) {
@@ -55,18 +61,39 @@ custEvent.prototype.readEmployeeUnmarkedAttendance = function(date) {
                         markedRef.on("value", function(data) {
                           empRef.on("value",function(empData){
                             if (data.val()===null) {
+                              /**If Attendance for given date having null so all engineer will make unmarked**/
                               var obj={};
-                              resolve(Object.keys(empData.val()));
                               obj[date]=JSON.stringify(Object.keys(empData.val()));
                             redisClient.hmset("employeeUnmarkedAttendance",obj);
+                            if(i!==undefined){
+                              resolve({"day":i,"absent":Object.keys(empData.val()).length});
+                            }else {
+                            resolve(Object.keys(empData.val()));
+                            }
+
                           }else {
+                            /**If Attendance for given date having data, so rest of engineer will make unmarked**/
+                            var attendanceEmp=Object.keys(data.val());
+                            var empData = Object.keys(empData.val());
+                            attendanceEmp.forEach(function(engId){
+                              empData=removeArrayData(empData,engId);
+                            });
+                            if(i!==undefined){
+                            resolve({"day":i,"absent":empData.length});
+                            }else {
+                              resolve(empData);
+                            }
 
                           }
                         });
-
                         });
                     } else {
+                      if(i!==undefined){
+                      resolve({"day":i,"absent":JSON.parse(employeeUnmarkedAttendance[date]).length});
+                    }else {
                       resolve(JSON.parse(employeeUnmarkedAttendance[date]));
+                    }
+
                     }
                   });
                   });

@@ -11,7 +11,6 @@ router.get("/", function(req, res) {
 
         deriveDataEvent.readEmployeeUnmarkedAttendance(date).then(function(attendance){
             deriveDataEvent.readEmployeeSnapshot(attendance).then(function(data){
-              console.log(data);
               obj.umarkedEmployee=data.employeeSnapshot;
               obj.timeStamp=timeStamp;
               obj.unmarkedNumber=attendance.length;
