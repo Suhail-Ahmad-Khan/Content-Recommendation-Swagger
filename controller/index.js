@@ -19,7 +19,9 @@ var router = express.Router();
   router.use("/updateEmployeeTrackingData",require("./updateEmployeeTrackingData"));
   router.use("/updateEmployeeBankData",require("./updateEmployeeBankData"));
 
-  router.use("/readUnmarkedAttendanceSummary",require("./readUnmarkedAttendanceSummary"));
+  router.use("/readFalloutAttendanceEmployee",require("./readFalloutAttendanceEmployee"));
+  router.use("/sendEmailToUnmarkedEmployee",require("./sendEmailToUnmarkedEmployee"));
+  router.use("/readUnmarkedAttendanceEmployee",require("./readUnmarkedAttendanceEmployee"));
   router.use("/readMonthlyAttendanceSummary",require("./readMonthlyAttendanceSummary"));
   router.use("/readDashboardData",require("./readDashboardData"));
 module.exports = router;

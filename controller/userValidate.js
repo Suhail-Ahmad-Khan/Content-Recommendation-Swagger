@@ -17,7 +17,7 @@ router.post("/",function(req,res){
         }else {
           res.status(404).send("Email not found");
         }
-      })
+      });
   } catch (e) {
     res.status(304).send("Bad Parameter");
   }

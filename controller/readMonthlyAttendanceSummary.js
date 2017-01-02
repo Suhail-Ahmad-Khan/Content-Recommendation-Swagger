@@ -11,16 +11,19 @@ router.get("/", function(req, res) {
             obj = {},
             monthAttendance = [],
             totalEmployee;
-           deriveDataEvent.readTotalEmployee();
+        deriveDataEvent.readTotalEmployee();
 
-            deriveDataEvent.on("totalEmployee",function(data){
-              totalEmployee=data;
-            });
+        deriveDataEvent.on("totalEmployee", function(data) {
+            totalEmployee = data;
+        });
         var tSplit = today.split("/");
         var dSplit = date.split("/");
         for (var i = 1; i <= monthDays(timeStamp); i++) {
             if ((tSplit[0] === dSplit[0] && tSplit[1] === dSplit[1]) && tSplit[2] < i) {
-                monthAttendance.push({"day": i,"absent": "-"});
+                monthAttendance.push({
+                    "day": i,
+                    "absent": "-"
+                });
             } else {
                 var promise = deriveDataEvent.readEmployeeUnmarkedAttendance(dSplit[0] + "/" + dSplit[1] + "/" + i, i).then(function(data) {
                     monthAttendance.push(data);
@@ -36,7 +39,7 @@ router.get("/", function(req, res) {
         })
 
     } catch (e) {
-
+console.log(e);
         res.status(304).send("Bad Parameter");
     }
 });
