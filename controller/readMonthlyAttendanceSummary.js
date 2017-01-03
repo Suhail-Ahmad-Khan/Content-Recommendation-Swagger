@@ -19,7 +19,7 @@ router.get("/", function(req, res) {
         var tSplit = today.split("/");
         var dSplit = date.split("/");
         for (var i = 1; i <= monthDays(timeStamp); i++) {
-            if ((tSplit[0] === dSplit[0] && tSplit[1] === dSplit[1]) && tSplit[2] < i) {
+            if ((tSplit[0] === dSplit[0] && tSplit[1] === dSplit[1]) && tSplit[2] <= i) {
                 monthAttendance.push({
                     "day": i,
                     "absent": "-"
