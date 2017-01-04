@@ -6,6 +6,7 @@ var router = express.Router();
   router.use("/readEmployeeMonthlyAttendance",require("./readEmployeeMonthlyAttendance"));
   router.use("/readEmployeeDayAttendance",require("./readEmployeeDayAttendance"));
   router.use("/createEmployeeDayAttendance",require("./createEmployeeDayAttendance"));
+  router.use("/searchEmployeeByName",require("./searchEmployeeByName"));
 
   router.use("/readEmployeeHRData",require("./readEmployeeHRData"));
   router.use("/readEmployeePersonalData",require("./readEmployeePersonalData"));

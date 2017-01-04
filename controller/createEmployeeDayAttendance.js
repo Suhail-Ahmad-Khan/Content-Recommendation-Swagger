@@ -14,8 +14,12 @@ router.post("/", function(req, res) {
         temp.reason = tempData.reason;
 
         var date = commonMethod.getFullTimeStamp(tempData.timeStamp);
-        commonMethod.createEmployeeAttendance(tempData.engineerId, date,temp).then(function() {
-          deriveDataEvent.creatEmployeeUnmarkedAttendance(tempData.engineerId, date);
+        if (temp.attendanceStatus === "Leave") {
+            deriveDataEvent.createEmployeeLeave(tempData.engineerId,date);
+        }
+
+        commonMethod.createEmployeeAttendance(tempData.engineerId, date, temp).then(function() {
+            deriveDataEvent.creatEmployeeUnmarkedAttendance(tempData.engineerId, date);
             res.send({
                 token: tempData.token,
                 engineerId: tempData.engineerId,

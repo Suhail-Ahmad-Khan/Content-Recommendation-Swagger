@@ -87,5 +87,10 @@ commonMethod.getMonthTimeStamp = function(timestamp) {
     return (now.getFullYear() + "/" +
         (now.getMonth() + 1));
 }
+commonMethod.monthDays = function(time) {
+    var date = new Date(Number.parseInt(time));
+    var d = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    return d.getDate();
+}
 
 module.exports = commonMethod;

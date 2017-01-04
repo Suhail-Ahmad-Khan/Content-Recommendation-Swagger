@@ -32,6 +32,43 @@ custEvent.prototype.employeeSnapshot = function(tempObj, engineerId) {
     });
 };
 
+custEvent.prototype.createEmployeeLeave = function (engineerId,date) {
+    redisClient.hgetall("employeeLeave", function(error, employeeData) {
+        if (employeeData === null || employeeData[date] === undefined) {
+
+          var temp = {};
+          var tempArry=[];
+          tempArry.push(engineerId);
+          temp[date]=JSON.stringify(tempArry);
+          redisClient.hmset("employeeLeave", temp);
+        }else {
+          var temp = JSON.parse(employeeData[date]).push(engineerId);
+          var tempObj = {};
+          tempObj[date] = JSON.stringify(temp);
+          redisClient.hmset("employeeLeave", temp);
+        }
+      });
+
+      /** COde for Increament the leaveTaken by eningeer in redis**/
+      redisClient.hgetall("employeeSnapshot", function(error, employeeSData) {
+        if (employeeSData === null || employeeSData[engineerId] === undefined) {
+            readEmployeeSnapshot(function(temp) {
+                var tempObj = JSON.parse(temp[engineerId]);
+                tempObj.leaveTaken+=1;
+                var empTemp = {};
+                empTemp[engineerId] = JSON.stringify(tempObj);
+                redisClient.hmset("employeeSnapshot", empTemp);
+            });
+        } else {
+            var tempObj = JSON.parse(employeeSData[engineerId]);
+            tempObj.leaveTaken+=1;
+            var empTemp = {};
+            empTemp[engineerId] = JSON.stringify(tempObj);
+            redisClient.hmset("employeeSnapshot", empTemp);
+        }
+      });
+
+};
 custEvent.prototype.readEmployeeSnapshot = function(engineerId) {
     return new Promise(function(resolve, reject) {
         redisClient.hgetall("employeeSnapshot", function(error, employeeData) {
@@ -47,6 +84,19 @@ custEvent.prototype.readEmployeeSnapshot = function(engineerId) {
         });
     });
 }
+
+custEvent.prototype.searchEmployee = function (name) {
+
+    var ref = firebase.database().ref("employee");
+    var empRef = ref.orderByChild("personal/employeeName").startAt(name);
+    empRef.once("value",function(value){
+      if(value.val()!==null)
+      myCustEvent.emit("employeeList",Object.keys(value.val()));
+      else
+      myCustEvent.emit("employeeList",[]);
+    });
+
+};
 custEvent.prototype.readTotalEmployee = function() {
     redisClient.hgetall("employeeSnapshot", function(error, employeeData) {
         if (employeeData !== null)
@@ -71,7 +121,7 @@ custEvent.prototype.readEmployeeUnmarkedAttendance = function(date, i) {
                             if (i !== undefined) {
                                 resolve({
                                     "day": i,
-                                    "absent": Object.keys(empData.val()).length
+                                    "unmarked": Object.keys(empData.val()).length
                                 });
                             } else {
                                 resolve(Object.keys(empData.val()));
@@ -90,7 +140,7 @@ custEvent.prototype.readEmployeeUnmarkedAttendance = function(date, i) {
                             if (i !== undefined) {
                                 resolve({
                                     "day": i,
-                                    "absent": empData.length
+                                    "unmarked": empData.length
                                 });
                             } else {
                                 resolve(empData);
@@ -103,7 +153,7 @@ custEvent.prototype.readEmployeeUnmarkedAttendance = function(date, i) {
                 if (i !== undefined) {
                     resolve({
                         "day": i,
-                        "absent": JSON.parse(employeeUnmarkedAttendance[date]).length
+                        "unmarked": JSON.parse(employeeUnmarkedAttendance[date]).length
                     });
                 } else {
                     resolve(JSON.parse(employeeUnmarkedAttendance[date]));

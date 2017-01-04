@@ -12,13 +12,12 @@ router.get("/", function(req, res) {
             monthAttendance = [],
             totalEmployee;
         deriveDataEvent.readTotalEmployee();
-
-        deriveDataEvent.on("totalEmployee", function(data) {
+        deriveDataEvent.once("totalEmployee", function(data) {
             totalEmployee = data;
         });
         var tSplit = today.split("/");
         var dSplit = date.split("/");
-        for (var i = 1; i <= monthDays(timeStamp); i++) {
+        for (var i = 1; i <= commonMethod.monthDays(timeStamp); i++) {
             if ((tSplit[0] === dSplit[0] && tSplit[1] === dSplit[1]) && tSplit[2] <= i) {
                 monthAttendance.push({
                     "day": i,
@@ -35,8 +34,8 @@ router.get("/", function(req, res) {
                 timeStamp,
                 "attendance": monthAttendance,
                 totalEmployee
-            })
-        })
+            });
+        });
 
     } catch (e) {
 console.log(e);
@@ -45,10 +44,3 @@ console.log(e);
 });
 
 module.exports = router;
-
-
-function monthDays(time) {
-    var date = new Date(Number.parseInt(time));
-    var d = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    return d.getDate();
-}

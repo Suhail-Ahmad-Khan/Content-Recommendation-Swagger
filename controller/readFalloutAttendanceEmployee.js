@@ -10,7 +10,7 @@ router.get("/",function(req,res){
 try {
   var timeStamp = req.query.timeStamp,
   date = commonMethod.getMonthTimeStamp(timeStamp),
-  days = monthDays(timeStamp);
+  days = commonMethod.monthDays(timeStamp);
    deriveDataEvent.readFalloutEmployee(date,days).then(function(data){
      deriveDataEvent.readEmployeeSnapshot(data).then(function(employee){
       res.send({timeStamp,"falloutEmployee":employee.employeeSnapshot,"totalEmployee":employee.totalEmployee});
@@ -23,8 +23,3 @@ try {
 });
 
   module.exports = router;
-  function monthDays(time) {
-      var date = new Date(Number.parseInt(time));
-      var d = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-      return d.getDate();
-  }
