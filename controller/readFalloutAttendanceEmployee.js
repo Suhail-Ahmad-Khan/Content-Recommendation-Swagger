@@ -13,7 +13,7 @@ try {
   days = commonMethod.monthDays(timeStamp);
    deriveDataEvent.readFalloutEmployee(date,days).then(function(data){
      deriveDataEvent.readEmployeeSnapshot(data).then(function(employee){
-      res.send({timeStamp,"falloutEmployee":employee.employeeSnapshot,"totalEmployee":employee.totalEmployee});
+      res.send({timeStamp,"falloutEmployee":employee.employeeSnapshot,"falloutNumber":employee.employeeSnapshot.length,"totalEmployee":employee.totalEmployee});
      });
    });
 

@@ -87,6 +87,14 @@ commonMethod.getMonthTimeStamp = function(timestamp) {
     return (now.getFullYear() + "/" +
         (now.getMonth() + 1));
 }
+
+commonMethod.isSunday = function(year,month ,day){
+  var myDate = new Date(year+"/"+month+"/"+day);
+if(myDate.getDay() === 0)
+return true;
+else
+return false;
+}
 commonMethod.monthDays = function(time) {
     var date = new Date(Number.parseInt(time));
     var d = new Date(date.getFullYear(), date.getMonth() + 1, 0);

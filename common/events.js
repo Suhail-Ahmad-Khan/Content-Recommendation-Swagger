@@ -88,8 +88,7 @@ custEvent.prototype.readEmployeeSnapshot = function(engineerId) {
 custEvent.prototype.searchEmployee = function (name) {
 
     var ref = firebase.database().ref("employee");
-    var empRef = ref.orderByChild("personal/employeeName").startAt(name);
-    empRef.once("value",function(value){
+    ref.once("value",function(value){
       if(value.val()!==null)
       myCustEvent.emit("employeeList",Object.keys(value.val()));
       else
