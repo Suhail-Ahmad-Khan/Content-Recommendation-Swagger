@@ -11,7 +11,8 @@ commonMethod.updateEmployeeData = function(engineerId, field, obj) {
         var ref = firebase.database().ref("employee/" + engineerId);
         ref.child(field).update(obj).then(function() {
             resolve();
-        }).catch(function() {
+        }).catch(function(e) {
+          console.log(e);
             reject();
         });
 

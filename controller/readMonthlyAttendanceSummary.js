@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var commonMethod = require("../common/commonMethod");
 var deriveDataEvent = require("../common/events");
-console.log(commonMethod.isSunday(2017,1,1));
+
 router.get("/", function(req, res) {
     try {
         var today = new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
@@ -18,7 +18,6 @@ router.get("/", function(req, res) {
         var tSplit = today.split("/");
         var dSplit = date.split("/");
         for (var i = 1; i <= commonMethod.monthDays(timeStamp); i++) {
-          console.log(dSplit[0],dSplit[1],i);
             if (((tSplit[0] === dSplit[0] && tSplit[1] === dSplit[1]) && tSplit[2] <= i )|| commonMethod.isSunday(dSplit[0],dSplit[1],i)) {
                 monthAttendance.push({
                     "day": i,

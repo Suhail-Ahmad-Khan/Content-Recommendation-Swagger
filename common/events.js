@@ -18,6 +18,7 @@ module.exports = myCustEvent;
 
 /****          employeeSnapshot Method       ****/
 custEvent.prototype.employeeSnapshot = function(tempObj, engineerId) {
+  console.log("engineerId::",engineerId);
     redisClient.hgetall("employeeSnapshot", function(error, employeeData) {
         if (employeeData === null || employeeData[engineerId] === undefined) {
             readEmployeeSnapshot(function(temp) {
@@ -40,33 +41,21 @@ custEvent.prototype.createEmployeeLeave = function (engineerId,date) {
           var tempArry=[];
           tempArry.push(engineerId);
           temp[date]=JSON.stringify(tempArry);
+          myCustEvent.updateEmployeeLeaveSnapshot(engineerId);
           redisClient.hmset("employeeLeave", temp);
         }else {
-          var temp = JSON.parse(employeeData[date]).push(engineerId);
-          var tempObj = {};
-          tempObj[date] = JSON.stringify(temp);
-          redisClient.hmset("employeeLeave", temp);
+          var temp = JSON.parse(employeeData[date]);
+          if (temp.indexOf(engineerId) === -1) {  //Avoid Duplicate
+            temp.push(engineerId);
+            var tempObj = {};
+            tempObj[date] = JSON.stringify(temp);
+            myCustEvent.updateEmployeeLeaveSnapshot(engineerId);
+            redisClient.hmset("employeeLeave", tempObj);
+          }
+
         }
       });
 
-      /** COde for Increament the leaveTaken by eningeer in redis**/
-      redisClient.hgetall("employeeSnapshot", function(error, employeeSData) {
-        if (employeeSData === null || employeeSData[engineerId] === undefined) {
-            readEmployeeSnapshot(function(temp) {
-                var tempObj = JSON.parse(temp[engineerId]);
-                tempObj.leaveTaken+=1;
-                var empTemp = {};
-                empTemp[engineerId] = JSON.stringify(tempObj);
-                redisClient.hmset("employeeSnapshot", empTemp);
-            });
-        } else {
-            var tempObj = JSON.parse(employeeSData[engineerId]);
-            tempObj.leaveTaken+=1;
-            var empTemp = {};
-            empTemp[engineerId] = JSON.stringify(tempObj);
-            redisClient.hmset("employeeSnapshot", empTemp);
-        }
-      });
 
 };
 custEvent.prototype.readEmployeeSnapshot = function(engineerId) {
@@ -74,7 +63,9 @@ custEvent.prototype.readEmployeeSnapshot = function(engineerId) {
         redisClient.hgetall("employeeSnapshot", function(error, employeeData) {
             var obj = [];
             engineerId.forEach(function(id) {
-                obj.push(JSON.parse(employeeData[id]));
+              var engg =JSON.parse(employeeData[id]);
+              engg.engineerId = id;
+                obj.push(engg);
             });
             var totalEmployee = Object.keys(employeeData).length;
             resolve({
@@ -85,7 +76,7 @@ custEvent.prototype.readEmployeeSnapshot = function(engineerId) {
     });
 }
 
-custEvent.prototype.searchEmployee = function (name) {
+custEvent.prototype.searchEmployee = function () {
 
     var ref = firebase.database().ref("employee");
     ref.once("value",function(value){
@@ -225,7 +216,27 @@ custEvent.prototype.updateEmployeeHRSnapshot = function(engineerId, obj) {
         redisClient.hmset("employeeSnapshot", tempObj);
     });
 };
+custEvent.prototype.updateEmployeeLeaveSnapshot = function (engineerId) {
+  /** COde for Increament the leaveTaken by eningeer in redis**/
+  redisClient.hgetall("employeeSnapshot", function(error, employeeSData) {
+    if (employeeSData === null || employeeSData[engineerId] === undefined) {
+        readEmployeeSnapshot(function(temp) {
+            var tempObj = JSON.parse(temp[engineerId]);
+            tempObj.leaveTaken+=1;
+            var empTemp = {};
+            empTemp[engineerId] = JSON.stringify(tempObj);
+            redisClient.hmset("employeeSnapshot", empTemp);
+        });
+    } else {
+        var tempObj = JSON.parse(employeeSData[engineerId]);
+        tempObj.leaveTaken+=1;
+        var empTemp = {};
+        empTemp[engineerId] = JSON.stringify(tempObj);
+        redisClient.hmset("employeeSnapshot", empTemp);
+    }
+  });
 
+};
 /*****         updateEmployeePersonalSnapshot Method        *****/
 custEvent.prototype.updateEmployeePersonalSnapshot = function(engineerId, obj) {
     redisClient.hgetall("employeeSnapshot", function(error, employeeData) {

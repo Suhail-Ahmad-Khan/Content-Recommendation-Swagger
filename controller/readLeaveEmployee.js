@@ -8,9 +8,9 @@ try {
   var timeStamp = req.query.timeStamp,
   date = commonMethod.getMonthTimeStamp(timeStamp),
   days = commonMethod.monthDays(timeStamp);
-   deriveDataEvent.readFalloutEmployee(date,days).then(function(data){
+   deriveDataEvent.readLeaveEmployee(date,days).then(function(data){
      deriveDataEvent.readEmployeeSnapshot(data).then(function(employee){
-      res.send({timeStamp,"falloutEmployee":employee.employeeSnapshot,"falloutNumber":employee.employeeSnapshot.length,"totalEmployee":employee.totalEmployee});
+      res.send({timeStamp,"leaveOutEmployee":employee.employeeSnapshot,"employeLeave":employee.employeeSnapshot.length,"totalEmployee":employee.totalEmployee});
      });
    });
 

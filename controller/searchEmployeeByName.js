@@ -5,7 +5,7 @@ var deriveDataEvent = require("../common/events");
 
 router.get("/", function(req, res) {
     try {
-
+      console.log("searching..");
         deriveDataEvent.searchEmployee();
         deriveDataEvent.once("employeeList",function(employeeList){
         if(employeeList.length!==0){
