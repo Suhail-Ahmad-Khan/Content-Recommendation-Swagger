@@ -18,7 +18,7 @@ router.put("/",function(req,res){
     res.send({"token":temp.token,"status":200,"message":"Successfully Updated"});
   });
 } catch (e) {
-    res.status(304).send("Bad Parameter");
+  res.status(401).send("Bad Parameter or invalid token");
   }
 
 });

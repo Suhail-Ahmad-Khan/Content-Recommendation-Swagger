@@ -182,6 +182,34 @@ custEvent.prototype.readFalloutEmployee = function (date,monthDays) {
     });
 };
 
+custEvent.prototype.readLeaveEmployee = function (date,monthDays) {
+  return new Promise(function(resolve, reject) {
+      redisClient.hgetall("employeeUnmarkedAttendance", function(error, employeeAttendance) {
+        var obj = {};
+        for (var key=1;key<=monthDays;key++) {
+        var temp =employeeAttendance[date+"/"+key]!==undefined ? (JSON.parse(employeeAttendance[date+"/"+key])): [];
+        var p = temp.forEach(function(value){
+          if(obj[value]!==undefined)
+          {
+            obj[value]={"value":++obj[value].value};
+          }else {
+            obj[value]={"value":0};
+          }
+        });
+
+        }
+        Promise.all([p]).then(function(){
+          var temp =[];
+          for (var i in obj) {
+            if(obj[i].value>=3){
+              temp.push(i);
+            }
+          }
+          resolve(temp);
+        });
+      });
+    });
+};
 /****       creatEmployeeUnmarkedAttendance Method       *****/
 custEvent.prototype.creatEmployeeUnmarkedAttendance = function(engineerId, date) {
     var obj = {};

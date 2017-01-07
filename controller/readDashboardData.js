@@ -16,6 +16,8 @@ router.get("/", function(req, res) {
             timeStamp -= 86400000;
             date = commonMethod.getFullTimeStamp(timeStamp);
 
+            commonMethod.verifyToken(req.query.token);
+
         deriveDataEvent.readTotalEmployee();
         deriveDataEvent.on("totalEmployee", function(data) {
             totalEmployee = data;
@@ -44,8 +46,7 @@ router.get("/", function(req, res) {
         });
 
     } catch (e) {
-      console.log(e);
-        res.status(304).send("Bad Parameter");
+        res.status(401).send("Bad Parameter or invalid token");
     }
 });
 

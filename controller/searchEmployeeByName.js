@@ -18,8 +18,7 @@ router.get("/", function(req, res) {
 
         });
     } catch (e) {
-        console.log(e);
-        res.status(304).send("Bad Parameter");
+        res.status(401).send("Bad Parameter or invalid token");
     }
 });
 

@@ -20,7 +20,7 @@ commonMethod.readEmployeeByFieldData(tempData.engineerId,"bank").then(function(d
   res.status(304).send("engineerId invalid");
 });
 } catch (e) {
-  res.status(304).send("Bad Parameter");
+  res.status(401).send("Bad Parameter or invalid token");
 }
 });
 

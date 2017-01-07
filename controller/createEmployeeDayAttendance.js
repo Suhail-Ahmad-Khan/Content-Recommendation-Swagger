@@ -32,6 +32,7 @@ router.post("/", function(req, res) {
         })
 
     } catch (e) {
+      res.status(401).send("Bad Parameter or invalid token");
 
     }
 

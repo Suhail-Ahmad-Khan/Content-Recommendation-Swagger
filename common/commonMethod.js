@@ -55,7 +55,7 @@ commonMethod.readEmployeeAttendance = function(engineerId, date) {
             }
         });
     })
-}
+};
 
 commonMethod.generateToken = function(user) {
     var payload = {
@@ -64,6 +64,14 @@ commonMethod.generateToken = function(user) {
         exp: moment().add(14, 'days').unix()
     };
     return jwt.encode(payload, config.TOKEN_SECRET);
+};
+commonMethod.verifyToken = function(token){
+  try {
+  console.log(jwt.decode(token, config.TOKEN_SECRET));
+  } catch (e) {
+    throw 404; 
+   }
+
 }
 
 commonMethod.getFullTimeStamp = function(timestamp) {
