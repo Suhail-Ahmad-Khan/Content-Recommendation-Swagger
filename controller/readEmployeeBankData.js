@@ -7,7 +7,7 @@ router.get("/",function(req,res){
   try {
 
   var tempData = req.query;
-commonMethod.readEmployeeByFieldData(tempData.engineerId,"bank").then(function(data){
+  commonMethod.readEmployeeByFieldData(tempData.engineerId,"bank").then(function(data){
   var tempObj={};
   tempObj.bankData=data;
   tempObj.token=tempData.token;

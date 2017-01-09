@@ -6,7 +6,7 @@ router.put("/",function(req,res){
   try {
     var temp = req.body;
     var obj= {};
-
+console.log(req.body);
     obj.diploma=temp.diploma;
     obj.degree=temp.degree;
     obj.discipline=temp.discipline;

@@ -28,5 +28,6 @@ var router = express.Router();
 
   router.use("/sendEmailToUnmarkedEmployee",require("./sendEmailToUnmarkedEmployee"));
   router.use("/sendEmailToFalloutEmployee",require("./sendEmailToFalloutEmployee"));
+  router.use("/sendEmailToLeaveEmployee",require("./sendEmailToLeaveEmployee"));
 
 module.exports = router;

@@ -52,7 +52,6 @@ function sendMailTo(emailId,employeeName,date) {
           reject(error);
       }else {
         resolve(info.response);
-      console.log('Message sent: ' + info.response);
       }
 
       });

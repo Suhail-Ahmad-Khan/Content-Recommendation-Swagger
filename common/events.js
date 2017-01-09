@@ -18,7 +18,6 @@ module.exports = myCustEvent;
 
 /****          employeeSnapshot Method       ****/
 custEvent.prototype.employeeSnapshot = function(tempObj, engineerId) {
-  console.log("engineerId::",engineerId);
     redisClient.hgetall("employeeSnapshot", function(error, employeeData) {
         if (employeeData === null || employeeData[engineerId] === undefined) {
             readEmployeeSnapshot(function(temp) {
@@ -184,7 +183,6 @@ custEvent.prototype.readFalloutEmployee = function (date,monthDays) {
 
 custEvent.prototype.readLeaveEmployee = function (date,monthDays) {
   return new Promise(function(resolve, reject) {
-    console.log(date,monthDays);
       redisClient.hgetall("employeeLeave", function(error, employeeLeave) {
         var obj = {};
         for (var key=1;key<=monthDays;key++) {
@@ -314,7 +312,6 @@ function readEmployeeSnapshot(callback) {
 }
 /*function isBigEnough(value) {
   return function(element, index, array) {
-    // console.log(index);
     if(element >= value)
     return index;
   }

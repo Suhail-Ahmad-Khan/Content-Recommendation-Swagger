@@ -12,7 +12,6 @@ commonMethod.updateEmployeeData = function(engineerId, field, obj) {
         ref.child(field).update(obj).then(function() {
             resolve();
         }).catch(function(e) {
-          console.log(e);
             reject();
         });
 
@@ -37,7 +36,6 @@ commonMethod.createEmployeeAttendance = function(engineerId, date, obj) {
     return new Promise(function(resolve, reject) {
         var ref = firebase.database().ref("employeeAttendance/" + engineerId);
         ref.child(date).set(obj);
-        console.log();
         ref.once("value", function(data) {
             resolve("Data");
         });
@@ -67,9 +65,9 @@ commonMethod.generateToken = function(user) {
 };
 commonMethod.verifyToken = function(token){
   try {
-  console.log(jwt.decode(token, config.TOKEN_SECRET));
+  jwt.decode(token, config.TOKEN_SECRET);
   } catch (e) {
-    throw 404; 
+    throw 404;
    }
 
 }
