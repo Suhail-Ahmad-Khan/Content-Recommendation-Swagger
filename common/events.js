@@ -110,7 +110,7 @@ custEvent.prototype.readEmployeeUnmarkedAttendance = function(date, i) {
                             if (i !== undefined) {
                                 resolve({
                                     "day": i,
-                                    "unmarked": Object.keys(empData.val()).length
+                                    "unmarked": String(Object.keys(empData.val()).length)  //String Form
                                 });
                             } else {
                                 resolve(Object.keys(empData.val()));
@@ -129,7 +129,7 @@ custEvent.prototype.readEmployeeUnmarkedAttendance = function(date, i) {
                             if (i !== undefined) {
                                 resolve({
                                     "day": i,
-                                    "unmarked": empData.length
+                                    "unmarked": String(empData.length)
                                 });
                             } else {
                                 resolve(empData);
@@ -142,7 +142,7 @@ custEvent.prototype.readEmployeeUnmarkedAttendance = function(date, i) {
                 if (i !== undefined) {
                     resolve({
                         "day": i,
-                        "unmarked": JSON.parse(employeeUnmarkedAttendance[date]).length
+                        "unmarked": String(JSON.parse(employeeUnmarkedAttendance[date]).length)
                     });
                 } else {
                     resolve(JSON.parse(employeeUnmarkedAttendance[date]));

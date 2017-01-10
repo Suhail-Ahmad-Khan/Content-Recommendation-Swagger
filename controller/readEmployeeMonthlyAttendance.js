@@ -9,7 +9,9 @@ router.get("/",function(req,res){
     var token = req.query.token,
         engineerId = req.query.engineerId,
         timeStamp = req.query.timeStamp,
-        date = commonMethod.getMonthTimeStamp(timeStamp);
+        date = commonMethod.getMonthTimeStamp(timeStamp),
+        time = date.split("/");
+        if(time[0]<new Date().getFullYear() || (time[0]<=new Date().getFullYear() && time[1]<=(new Date().getMonth()+1))){
         commonMethod.readEmployeeAttendance(engineerId,date).then(function(data){
           var tempObj={token};
           tempObj.attendanceData=data;
@@ -20,6 +22,9 @@ router.get("/",function(req,res){
         }).catch(function(){
               res.status(404).send("user is not available or no Attendance entry");
         });
+      }else {
+        res.status(404).send("No Attendance entry for ::"+date);
+      }
 
   } catch (e) {
     res.status(401).send("Bad Parameter or invalid token");

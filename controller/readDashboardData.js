@@ -13,9 +13,10 @@ router.get("/", function(req, res) {
             totalEmployee,
             falloutEmployee,
             unmarked;
-            timeStamp -= 86400000;
+            timeStamp -= 86400000;  //Giving 1 day back data
             date = commonMethod.getFullTimeStamp(timeStamp);
-
+            time = date.split("/");
+            // if(time[0]<=new Date().getFullYear() && time[1]<=new Date().getMonth()){
             commonMethod.verifyToken(req.query.token);
 
         deriveDataEvent.readTotalEmployee();
@@ -27,7 +28,10 @@ router.get("/", function(req, res) {
           unmarked = data.unmarked;
         });
         date = commonMethod.getMonthTimeStamp(timeStamp),
-        days = commonMethod.monthDays(timeStamp);
+        days = commonMethod.monthDays(timeStamp),
+        time = date.split("/");
+        console.log(new Date().getMonth());
+        if(time[0]<new Date().getFullYear() || (time[0]<=new Date().getFullYear() && time[1]<=(new Date().getMonth()+1))){
          var promise2 =deriveDataEvent.readFalloutEmployee(date,days).then(function(data){
            falloutEmployee= data.length;
          });
@@ -44,6 +48,9 @@ router.get("/", function(req, res) {
                     }
             });
         });
+      }else {
+        res.status(404).send("No entry for ::"+date);
+      }
 
     } catch (e) {
         res.status(401).send("Bad Parameter or invalid token");

@@ -3,6 +3,7 @@ var router = express.Router();
 
   router.use("/userValidate",require("./userValidate"));
   router.use("/login",require("./login"));
+  router.use("/signup",require("./signup"));
   router.use("/readEmployeeMonthlyAttendance",require("./readEmployeeMonthlyAttendance"));
   router.use("/readEmployeeDayAttendance",require("./readEmployeeDayAttendance"));
   router.use("/createEmployeeDayAttendance",require("./createEmployeeDayAttendance"));

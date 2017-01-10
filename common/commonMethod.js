@@ -8,12 +8,22 @@ config.TOKEN_SECRET = process.env.TOKEN_SECRET || 'nk235jaih535lhgdszhdfb-89ddsa
 /**       Mehtod is for reading employee HR data        **/
 commonMethod.updateEmployeeData = function(engineerId, field, obj) {
     return new Promise(function(resolve, reject) {
+      if (engineerId===undefined) {
+        reject(404);
+      }
         var ref = firebase.database().ref("employee/" + engineerId);
-        ref.child(field).update(obj).then(function() {
-            resolve();
-        }).catch(function(e) {
-            reject();
-        });
+        ref.once("value",function(value){
+          if(value.val()!== null){
+            ref.child(field).update(obj).then(function() {
+                resolve();
+            }).catch(function(e) {
+                reject();
+            });
+          }else {
+            reject(404);
+          }
+
+      });
 
     });
 };

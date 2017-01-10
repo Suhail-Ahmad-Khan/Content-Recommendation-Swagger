@@ -21,7 +21,7 @@ router.get("/", function(req, res) {
             if (((tSplit[0] === dSplit[0] && tSplit[1] === dSplit[1]) && tSplit[2] <= i )|| commonMethod.isSunday(dSplit[0],dSplit[1],i)) {
                 monthAttendance.push({
                     "day": i,
-                    "absent": "-"
+                    "unmarked": "-"
                 });
             } else {
                 var promise = deriveDataEvent.readEmployeeUnmarkedAttendance(dSplit[0] + "/" + dSplit[1] + "/" + i, i).then(function(data) {
