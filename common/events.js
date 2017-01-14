@@ -99,7 +99,9 @@ custEvent.prototype.readEmployeeUnmarkedAttendance = function(date, i) {
             if (employeeUnmarkedAttendance === null || employeeUnmarkedAttendance[date] === undefined) {
                 var ref = firebase.database().ref();
                 var empRef = ref.child("employee");
-                var markedRef = ref.child("employeeAttendance").orderByChild(date + "/markedStatus").startAt("");
+                var dateSplit = date.split("/");
+                var date1 =dateSplit[0]+"/"+dateSplit[1]+"/day"+dateSplit[2];
+                var markedRef = ref.child("employeeAttendance").orderByChild(date1 + "/markedStatus").startAt("");
                 markedRef.on("value", function(data) {
                     empRef.on("value", function(empData) {
                         if (data.val() === null) {
@@ -185,6 +187,11 @@ custEvent.prototype.readLeaveEmployee = function (date,monthDays) {
   return new Promise(function(resolve, reject) {
       redisClient.hgetall("employeeLeave", function(error, employeeLeave) {
         var obj = {};
+        if (employeeLeave===null) {
+          resolve([]);
+        }else {
+
+
         for (var key=1;key<=monthDays;key++) {
         var temp =employeeLeave[date+"/"+key]!==undefined ? (JSON.parse(employeeLeave[date+"/"+key])): [];
         var p = temp.forEach(function(value){
@@ -206,6 +213,7 @@ custEvent.prototype.readLeaveEmployee = function (date,monthDays) {
           }
           resolve(temp);
         });
+      }//Else End
       });
     });
 };
@@ -316,7 +324,4 @@ function readEmployeeSnapshot(callback) {
     return index;
   }
 }
-var filtered = [10, 15, 8, 130, 44].filter(isBigEnough(10));
-
-console.log(filtered);
-*/
+var filtered = [10, 15, 8, 130, 44].filter(isBigEnough(10));*/

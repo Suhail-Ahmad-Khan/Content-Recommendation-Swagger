@@ -10,8 +10,9 @@ router.get("/",function(req,res){
         engineerId = req.query.engineerId,
         timeStamp = req.query.timeStamp,
         date = commonMethod.getMonthTimeStamp(timeStamp),
-        time = date.split("/");
-        if(time[0]<new Date().getFullYear() || (time[0]<=new Date().getFullYear() && time[1]<=(new Date().getMonth()+1))){
+        time = date.split("/"),
+        today = commonMethod.getMonthTimeStamp(Date.now()).split("/");
+        if(time[0]<today[0] || (time[0]<=today[0] && time[1]<=today[1])){
         commonMethod.readEmployeeAttendance(engineerId,date).then(function(data){
           var tempObj={token};
           tempObj.attendanceData=data;

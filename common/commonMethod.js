@@ -44,22 +44,45 @@ commonMethod.readEmployeeByFieldData = function(engineerId, field) {
 /**       Mehtod is for inserting employee Attendance Data in firebase          **/
 commonMethod.createEmployeeAttendance = function(engineerId, date, obj) {
     return new Promise(function(resolve, reject) {
-        var ref = firebase.database().ref("employeeAttendance/" + engineerId);
-        ref.child(date).set(obj);
-        ref.once("value", function(data) {
-            resolve("Data");
-        });
+      //For Structure issue Convert into String
+      var dateSplit = date.split("/");
+      date =dateSplit[0]+"/"+dateSplit[1]+"/day"+dateSplit[2];
+      firebase.database().ref("employee/"+engineerId).once("value",function (emp) {
+        if (emp.val()===null) {
+          reject();
+        }else {
+          var ref = firebase.database().ref("employeeAttendance/" + engineerId);
+          ref.child(date).set(obj);
+          ref.once("value", function(data) {
+              resolve("Data");
+          });
+        }
+      });
+
     });
 };
 
 commonMethod.readEmployeeAttendance = function(engineerId, date) {
     return new Promise(function(resolve, reject) {
-        var ref = firebase.database().ref("employeeAttendance/" + engineerId);
-        ref.child(date).once("value", function(data) {
+      var dateSplit = date.split("/");
+
+      // date =dateSplit[0]+"/"+dateSplit[1]+"/day"+dateSplit[2];
+      firebase.database().ref("employee/"+engineerId).once("value").then(function (emp) {
+        if (emp.val()===null) {
+          reject();
+        }
+      });
+        var ref = firebase.database().ref("employeeAttendance/" + engineerId+"/"+date);
+        ref.once("value").then(function(data) {
             if (data.val() !== null) {
-                resolve(data.val());
+              var temp={};
+              for (var d in data.val()) {
+              var day =Number.parseInt(d.replace(/^\D+/g, ''));
+              temp[day]=data.val()[d];
+              }
+              resolve(temp);
             } else {
-                reject();
+                resolve({});
             }
         });
     })
@@ -83,15 +106,15 @@ commonMethod.verifyToken = function(token){
 }
 
 commonMethod.getFullTimeStamp = function(timestamp) {
-
     if (timestamp !== undefined) {
         timestamp = Number.parseInt(timestamp);
         now = new Date(timestamp);
     } else {
         now = new Date();
     }
+    var month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     return (now.getFullYear() + "/" +
-        (now.getMonth() + 1) + '/' +
+        (month[now.getMonth()]) + '/' +
         now.getDate());
 }
 commonMethod.getMonthTimeStamp = function(timestamp) {
@@ -101,8 +124,9 @@ commonMethod.getMonthTimeStamp = function(timestamp) {
     } else {
         now = new Date();
     }
+    var month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     return (now.getFullYear() + "/" +
-        (now.getMonth() + 1));
+        (month[now.getMonth()] ));
 }
 
 commonMethod.isSunday = function(year,month ,day){

@@ -28,7 +28,7 @@ router.post("/", function(req, res) {
                 message: "Successfully Added"
             });
         }).catch(function() {
-            res.status(500).send("error");
+            res.status(404).send("No User Vailable with enigeneer Id");
         })
 
     } catch (e) {

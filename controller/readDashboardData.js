@@ -5,17 +5,19 @@ var deriveDataEvent = require("../common/events");
 
 router.get("/", function(req, res) {
     try {
-        var today = new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
+        var today =  commonMethod.getFullTimeStamp(),
             timeStamp =  Number.parseInt(req.query.timeStamp),
             date,
             obj = {},
             monthAttendance = [],
             totalEmployee,
             falloutEmployee,
+            leave,
             unmarked;
             timeStamp -= 86400000;  //Giving 1 day back data
             date = commonMethod.getFullTimeStamp(timeStamp);
             time = date.split("/");
+            today=today.split("/");
             // if(time[0]<=new Date().getFullYear() && time[1]<=new Date().getMonth()){
             commonMethod.verifyToken(req.query.token);
 
@@ -30,11 +32,13 @@ router.get("/", function(req, res) {
         date = commonMethod.getMonthTimeStamp(timeStamp),
         days = commonMethod.monthDays(timeStamp),
         time = date.split("/");
-        console.log(new Date().getMonth());
-        if(time[0]<new Date().getFullYear() || (time[0]<=new Date().getFullYear() && time[1]<=(new Date().getMonth()+1))){
+        if(time[0]<today[0] || (time[0]<=today[0] && time[1]<=today[1])){
          var promise2 =deriveDataEvent.readFalloutEmployee(date,days).then(function(data){
            falloutEmployee= data.length;
          });
+          var promise3 = deriveDataEvent.readLeaveEmployee(date,days).then(function (data) {
+            leave=""+data.length;
+          })
         Promise.all([promise1,promise2]).then(function() {
             res.send({
                 timeStamp,
@@ -44,7 +48,7 @@ router.get("/", function(req, res) {
                         totalEmployee
                     },
                     'leaveSummary': {
-                        'leave': '12'
+                        leave
                     }
             });
         });
