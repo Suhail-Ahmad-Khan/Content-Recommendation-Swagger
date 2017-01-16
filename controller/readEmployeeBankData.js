@@ -5,8 +5,13 @@ var deriveDataEvent = require("../common/events");
 
 router.get("/",function(req,res){
   try {
-
   var tempData = req.query;
+  var keys =["engineerId","token"];
+  keys.forEach(function (k) {
+    if(tempData[k]===undefined || tempData[k]===null || tempData[k]=== ''){
+      throw 400;
+    }
+  });
   commonMethod.readEmployeeByFieldData(tempData.engineerId,"bank").then(function(data){
   var tempObj={};
   tempObj.bankData=data;
@@ -20,6 +25,9 @@ router.get("/",function(req,res){
   res.status(304).send("engineerId invalid");
 });
 } catch (e) {
+  if(e===400)
+  res.status(400).send("Bad Request Parameter");
+  else
   res.status(401).send("Bad Parameter or invalid token");
 }
 });

@@ -7,11 +7,14 @@ router.post("/", function(req, res) {
     try {
         var tempData = req.body;
         var temp = {};
-        temp.attendanceStatus = tempData.attendanceStatus;
-        temp.markedStatus = tempData.markedStatus;
-        temp.punchIn = tempData.punchIn;
-        temp.punchOut = tempData.punchOut;
-        temp.reason = tempData.reason;
+        var keys = ["attendanceStatus","markedStatus","punchIn","punchOut","reason"];
+        keys.forEach(function (k) {
+          if(tempData[k]===undefined || tempData[k]===null || tempData[k]=== ''){
+            throw 400;
+          }else {
+            temp[k]=tempData[k];
+          }
+        });
 
         var date = commonMethod.getFullTimeStamp(tempData.timeStamp);
         if (temp.attendanceStatus === "Leave") {
@@ -27,12 +30,15 @@ router.post("/", function(req, res) {
                 status: 200,
                 message: "Successfully Added"
             });
-        }).catch(function() {
+        }).catch(function(e) {
             res.status(404).send("No User Vailable with enigeneer Id");
-        })
+        });
 
     } catch (e) {
-      res.status(401).send("Bad Parameter or invalid token");
+      if(e===400)
+      res.status(400).send("Bad Request Parameter");
+      else
+      res.status(401).send(" invalid token");
 
     }
 

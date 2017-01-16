@@ -11,6 +11,11 @@ router.get("/", function(req, res) {
             obj = {},
             monthAttendance = [],
             totalEmployee;
+            
+            if(timeStamp===undefined || timeStamp===null || timeStamp=== ''){
+              throw 400;
+            }
+
         deriveDataEvent.readTotalEmployee();
         deriveDataEvent.once("totalEmployee", function(data) {
             totalEmployee = data;
@@ -38,6 +43,9 @@ router.get("/", function(req, res) {
         });
 
     } catch (e) {
+      if(e===400)
+      res.status(400).send("Bad Request Parameter");
+      else
       res.status(401).send("Bad Parameter or invalid token");
     }
 });

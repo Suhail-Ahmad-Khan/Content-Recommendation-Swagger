@@ -8,6 +8,11 @@ try {
   var timeStamp = req.query.timeStamp,
   date = commonMethod.getMonthTimeStamp(timeStamp),
   days = commonMethod.monthDays(timeStamp);
+
+    if(timeStamp===undefined || timeStamp===null || timeStamp=== ''){
+      throw 400;
+    }
+
    deriveDataEvent.readLeaveEmployee(date,days).then(function(data){
      deriveDataEvent.readEmployeeSnapshot(data).then(function(employee){
       res.send({timeStamp,"leaveOutEmployee":employee.employeeSnapshot,"employeLeave":employee.employeeSnapshot.length,"totalEmployee":employee.totalEmployee});
@@ -15,7 +20,10 @@ try {
    });
 
 } catch (e) {
-    res.status(304).send("Bad Parameter");
+  if(e===400)
+  res.status(400).send("Bad Request Parameter");
+  else
+  res.status(304).send("Bad Parameter");
 }
 });
 

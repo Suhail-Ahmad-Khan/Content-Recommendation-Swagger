@@ -5,20 +5,26 @@ var commonMethod = require("../common/commonMethod");
 
 router.put("/",function(req,res){
   try {
-    var temp = req.body;
+    var tempData = req.body;
     var obj= {};
-    obj.accountNumber=temp.accountNumber;
-    obj.bankName=temp.bankName;
-    obj.ifscCode=temp.ifscCode;
-    obj.pan=temp.pan;
-    obj.paySalary=temp.paySalary;
-    obj.reason=temp.reason;
+    var keys =["accountNumber","bankName","ifscCode","pan","paySalary","reason"];
+    keys.forEach(function (k) {
+      if(tempData[k]===undefined || tempData[k]===null || tempData[k]=== ''){
+        throw 400;
+      }else {
+        obj[k]=tempData[k];
+      }
+    });
 
-  commonMethod.updateEmployeeData(temp.engineerId,"bank",obj).then(function(){
-    res.send({"token":temp.token,"status":200,"message":"Successfully Updated"});
+
+  commonMethod.updateEmployeeData(tempData.engineerId,"bank",obj).then(function(){
+    res.send({"token":tempData.token,"status":200,"message":"Successfully Updated"});
   }).catch(data=>{res.status(404).send("User Not Found")});
 } catch (e) {
-  res.status(401).send("Bad Parameter or invalid token");
+  if(e===400)
+  res.status(400).send("Bad Request Parameter");
+  else
+  res.status(401).send("invalid token");
   }
 
 });

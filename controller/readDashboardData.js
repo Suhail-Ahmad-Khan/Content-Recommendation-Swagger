@@ -18,6 +18,11 @@ router.get("/", function(req, res) {
             date = commonMethod.getFullTimeStamp(timeStamp);
             time = date.split("/");
             today=today.split("/");
+            var tempData=req.query.timeStamp;
+              if(tempData===undefined || tempData===null || tempData=== ''){
+                throw 400;
+              }
+
             // if(time[0]<=new Date().getFullYear() && time[1]<=new Date().getMonth()){
             commonMethod.verifyToken(req.query.token);
 
@@ -57,6 +62,9 @@ router.get("/", function(req, res) {
       }
 
     } catch (e) {
+      if(e===400)
+      res.status(400).send("Bad Request Parameter");
+      else
         res.status(401).send("Bad Parameter or invalid token");
     }
 });

@@ -9,6 +9,11 @@ router.post("/", function(req, res) {
         var temp = req.body;
         var timeStamp = temp.timeStamp;
         var date = commonMethod.getMonthTimeStamp(timeStamp);
+
+        if(timeStamp===undefined || timeStamp===null || timeStamp=== ''){
+          throw 400;
+        }
+        
         days = commonMethod.monthDays(timeStamp);
         var promise =  deriveDataEvent.readFalloutEmployee(date,days).then(function(data){
             deriveDataEvent.readEmployeeSnapshot(data).then(function(engineerData){
@@ -26,6 +31,9 @@ router.post("/", function(req, res) {
         });
         //sendMailTo()
     } catch (e) {
+      if(e===400)
+      res.status(400).send("Bad Request Parameter");
+      else
       res.status(401).send("Bad Parameter or invalid token");
     }
 });

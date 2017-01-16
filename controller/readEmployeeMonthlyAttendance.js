@@ -12,6 +12,14 @@ router.get("/",function(req,res){
         date = commonMethod.getMonthTimeStamp(timeStamp),
         time = date.split("/"),
         today = commonMethod.getMonthTimeStamp(Date.now()).split("/");
+        var tempData = req.query;
+        var keys =["engineerId","token","timeStamp"];
+        keys.forEach(function (k) {
+          if(tempData[k]===undefined || tempData[k]===null || tempData[k]=== ''){
+            throw 400;
+          }
+        });
+
         if(time[0]<today[0] || (time[0]<=today[0] && time[1]<=today[1])){
         commonMethod.readEmployeeAttendance(engineerId,date).then(function(data){
           var tempObj={token};
@@ -28,6 +36,9 @@ router.get("/",function(req,res){
       }
 
   } catch (e) {
+    if(e===400)
+    res.status(400).send("Bad Request Parameter");
+    else
     res.status(401).send("Bad Parameter or invalid token");
   }
 });
