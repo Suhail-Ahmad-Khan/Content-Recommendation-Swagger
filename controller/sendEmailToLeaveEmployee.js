@@ -42,25 +42,16 @@ module.exports = router;
 function sendMailTo(emailId,employeeName,date) {
   new Promise(function(resolve, reject) {
 
-  var transporter = nodemailer.createTransport('smtps://noorihamid1994%40gmail.com:sayham2009@smtp.gmail.com');
 
   var mailOptions = {
       from: '"BridgeLabz Admin" <noorihamid1994@gmail.com>', // sender address
-      to: emailId, // list of receivers'hamidabdul1994@gmail.com'
+      to: emailId, // list of receivers
       subject: 'Regarding Leave  ', // Subject line
       // text: 'Hello world ', // plaintext body
       html: '<b>Hello '+employeeName+'</b><br/><p>It is to bring to your kind notice That you have taken extra leaves, So your Payment could be deductd as per your number of leaves, which is you taken. </p><br/><br/>\
       If you have any queries please contact admin using the given link :<a href="http://localhost/fundooHrAdmin">http://localhost/fundooHrAdmin</a><br/> Thanking you' // html body
   };
+  commonMethod.sendEmail(mailOptions).then(data=>{resolve()});
 
-  // send mail with defined transport object
-  transporter.sendMail(mailOptions, function(error, info){
-      if(error){
-          reject(error);
-      }else {
-        resolve(info.response);
-      }
-
-      });
   });
 }

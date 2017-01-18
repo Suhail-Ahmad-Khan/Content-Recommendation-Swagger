@@ -31,4 +31,8 @@ var router = express.Router();
   router.use("/sendEmailToFalloutEmployee",require("./sendEmailToFalloutEmployee"));
   router.use("/sendEmailToLeaveEmployee",require("./sendEmailToLeaveEmployee"));
 
+  router.use("/readAllEmployee",require("./readAllEmployee"));
+  router.use("/readInternEmployee",require("./readInternEmployee"));
+  router.use("/downloadReport",require("./downloadReport"));
+
 module.exports = router;

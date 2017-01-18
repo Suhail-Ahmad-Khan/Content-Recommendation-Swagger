@@ -15,7 +15,7 @@ try {
 
    deriveDataEvent.readLeaveEmployee(date,days).then(function(data){
      deriveDataEvent.readEmployeeSnapshot(data).then(function(employee){
-      res.send({timeStamp,"leaveOutEmployee":employee.employeeSnapshot,"employeLeave":employee.employeeSnapshot.length,"totalEmployee":employee.totalEmployee});
+      res.send({timeStamp,"leaveOutEmployee":employee.employeeSnapshot,"employeeLeave":employee.employeeSnapshot.length,"totalEmployee":employee.totalEmployee});
      });
    });
 

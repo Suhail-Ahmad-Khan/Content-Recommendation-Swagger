@@ -1,7 +1,9 @@
 var jwt = require('jwt-simple');
 var moment = require('moment');
 var firebase = require("../config/firebase.js");
+var fs = require('fs');
 var commonMethod = {};
+var nodemailer = require('nodemailer');
 var config = {};
 config.TOKEN_SECRET = process.env.TOKEN_SECRET || 'nk235jaih535lhgdszhdfb-89ddsaj';
 
@@ -27,6 +29,34 @@ commonMethod.updateEmployeeData = function(engineerId, field, obj) {
 
     });
 };
+
+/*****      Method is for sending mail ******/
+commonMethod.sendEmail = function (mailOptions) {
+    new Promise(function(resolve, reject) {
+  var transporter = nodemailer.createTransport('smtps://noorihamid1994%40gmail.com:sayham2009@smtp.gmail.com');
+
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, function(error, info){
+      if(error){
+          reject(error);
+      }else {
+        resolve(info.response);
+      }
+
+      });
+    });
+};
+/*****      Method is for reading the JSON       *****/
+
+commonMethod.readJSON = function(fileName) {
+    return new Promise(function(resolve, reject) {
+      fs.readFile(fileName, 'utf8', function(err, data) {
+              if (err) throw err;
+              resolve(data);
+          });
+    });
+};
+/*****      Method is for reading the employee details for particular field        *****/
 
 commonMethod.readEmployeeByFieldData = function(engineerId, field) {
     return new Promise(function(resolve, reject) {

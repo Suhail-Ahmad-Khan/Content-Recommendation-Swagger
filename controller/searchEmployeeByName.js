@@ -12,7 +12,7 @@ router.get("/", function(req, res) {
             res.send({"employeeList":data.employeeSnapshot});
           });
         }else {
-          res.status(404).send("Not Employee availble");
+          res.status(404).send("Not Employee available");
         }
 
         });

@@ -13,7 +13,7 @@ router.post("/", function(req, res) {
         if(timeStamp===undefined || timeStamp===null || timeStamp=== ''){
           throw 400;
         }
-        
+
         days = commonMethod.monthDays(timeStamp);
         var promise =  deriveDataEvent.readFalloutEmployee(date,days).then(function(data){
             deriveDataEvent.readEmployeeSnapshot(data).then(function(engineerData){
@@ -22,6 +22,7 @@ router.post("/", function(req, res) {
             });
           });
         });
+        /**  waitinf for promise is execute complete or not  **/
          Promise.all([promise]).then(function() {
            res.send({
                timeStamp,
@@ -44,8 +45,6 @@ module.exports = router;
 function sendMailTo(emailId,employeeName,date) {
   new Promise(function(resolve, reject) {
 
-  var transporter = nodemailer.createTransport('smtps://noorihamid1994%40gmail.com:sayham2009@smtp.gmail.com');
-
   var mailOptions = {
       from: '"BridgeLabz Admin" <noorihamid1994@gmail.com>', // sender address
       to: emailId, // list of receivers'hamidabdul1994@gmail.com'
@@ -56,13 +55,6 @@ function sendMailTo(emailId,employeeName,date) {
   };
 
   // send mail with defined transport object
-  transporter.sendMail(mailOptions, function(error, info){
-      if(error){
-          reject(error);
-      }else {
-        resolve(info.response);
-      }
-
-      });
+commonMethod.sendEmail(mailOptions).then(data=>{resolve()});
   });
 }

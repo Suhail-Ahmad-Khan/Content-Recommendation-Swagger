@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var commonMethod = require("../common/commonMethod");
 var deriveDataEvent = require("../common/events");
-var nodemailer = require('nodemailer');
 
 router.post("/", function(req, res) {
     try {
@@ -40,25 +39,15 @@ module.exports = router;
 
 function sendMailTo(emailId,employeeName,date) {
   new Promise(function(resolve, reject) {
-
-  var transporter = nodemailer.createTransport('smtps://noorihamid1994%40gmail.com:sayham2009@smtp.gmail.com');
-
+// create email Template
   var mailOptions = {
       from: '"BridgeLabz Admin" <noorihamid1994@gmail.com>', // sender address
-      to: emailId, // list of receivers'hamidabdul1994@gmail.com'
+      to: emailId, // list of receivers
       subject: 'Regarding Attendance', // Subject line
-      // text: 'Hello world ', // plaintext body
       html: '<b>Hello '+employeeName+'</b><br/><p>Please mark your Attendance for date:  '+date+'</p>Mark Attendance using <a href="http://localhost/fundooHr">http://localhost/fundooHr</a><br/> Thanking you' // html body
   };
 
   // send mail with defined transport object
-  transporter.sendMail(mailOptions, function(error, info){
-      if(error){
-          reject(error);
-      }else {
-        resolve(info.response);
-      }
-
-      });
+commonMethod.sendEmail(mailOptions).then(data=>{resolve()});
   });
 }
