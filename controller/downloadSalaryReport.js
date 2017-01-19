@@ -6,19 +6,27 @@ var deriveDataEvent = require("../common/events");
 var csv = require('csv');
 var fs = require('fs');
 
-router.get("/", function(req, res) {
+router.post("/", function(req, res) {
     try {
-
+      var employeeList = req.body.employeeList;
+      console.log(employeeList);
 // var fields = ['name', 'phone', 'mobile', 'email', 'address', 'notes'];
-var docs = [['Name', 'Phone', 'Mobile', 'Email', 'Address', 'Notes'],
-            ['SOme Name1', 'Some Phone1', 'SOme Mobile1', 'Some Email1', 'Some Address1', 'Some Note1'],
-            ['SOme Name2', 'Some Phone2', 'SOme Mobile2', 'Some Email2', 'Some Address2', 'Some Note2'],
-            ['SOme Name3', 'Some Phone3', 'SOme Mobile3', 'Some Email3', 'Some Address3', 'Some Note3'],
-            ['SOme Name4', 'Some Phone4', 'SOme Mobile4', 'Some Email4', 'Some Address4', 'Some Note4'],
-            ['SOme Name5', 'Some Phone5', 'SOme Mobile5', 'Some Email5', 'Some Address5', 'Some Note5']];
+var docs = [['Engineer ID','Emplyee Name', 'Account Number', ' Bank Name ', 'IFSC code', 'paySalary'],
+            ["427188EI","Abhishek Ganguly","1234657998", "SBI", "SBI00027", "Yes"],
+            ["427189EI","Suyash Nanda","1234657998", "BOM", "MAHB00448", "Yes"],
+            ["427190EI","Laxman Nanda","1234657998", "BOI", "BOI00027", "Yes"],
+            ["427191EI","Mohammad Chhotta","1234657998", "SBI", "SBI00027", "Yes"],
+            ["427192EI","Suhail Khan","1234657998", "BOM", "MAHB00001", "Yes"],
+            ["427193EI","Amit Singh","1234657998", "SBI", "SBI00027", "Yes"],
+            ["427194EI","Prashant Sharma","1234657998", "SBI", "SBI00027", "Yes"],
+            ["427195EI","Mukesh Shabanam","1234657998", "SBI", "SBI00027", "Yes"],
+            ["427196EI","Madhu Mati","1234657998", "SBI", "SBI00027", "Yes"],
+            ["427195EI","Pushpa","1234657998", "SBI", "SBI00027", "Yes"],
+            ["427195EI","Seeta","1234657998", "SBI", "SBI00027", "Yes"],
+            ["427195EI","Maya Singh","1234657998", "SBI", "SBI00027", "Yes"]];
 
 
-    res.send(docs);
+    res.send({"csvData":docs});
     } catch (e) {
       console.log(e);
         res.status(401).send("Bad Parameter or invalid token");

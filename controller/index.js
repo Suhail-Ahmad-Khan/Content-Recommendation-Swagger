@@ -33,6 +33,6 @@ var router = express.Router();
 
   router.use("/readAllEmployee",require("./readAllEmployee"));
   router.use("/readInternEmployee",require("./readInternEmployee"));
-  router.use("/downloadReport",require("./downloadReport"));
+  router.use("/downloadSalaryReport",require("./downloadSalaryReport"));
 
 module.exports = router;
