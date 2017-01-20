@@ -34,5 +34,6 @@ var router = express.Router();
   router.use("/readAllEmployee",require("./readAllEmployee"));
   router.use("/readInternEmployee",require("./readInternEmployee"));
   router.use("/downloadSalaryReport",require("./downloadSalaryReport"));
+  router.use("/downloadAttendanceReport",require("./downloadAttendanceReport"));
 
 module.exports = router;

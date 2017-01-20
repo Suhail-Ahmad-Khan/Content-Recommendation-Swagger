@@ -9,8 +9,8 @@ router.post("/",function(req,res){
     firebase.auth().signInWithEmailAndPassword(email,password).catch(function(error) {
       res.status(401).send({token:null,status:401,message:"Unautherized User"});
     }).then(function(data){
-      token=commonMethod.generateToken(email);
       if (data!==undefined) {
+          token=commonMethod.generateToken(email);
       res.send({token,status:200,message:"login success"});
       }
     });
