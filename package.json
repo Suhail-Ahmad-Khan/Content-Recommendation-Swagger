@@ -29,6 +29,8 @@
     "jsreport": "^1.3.2",
     "jwt-simple": "^0.5.1",
     "morgan": "^1.7.0",
+    "mu2": "^0.5.21",
+    "mu2express": "0.0.1",
     "nodemailer": "^2.7.0",
     "redis": "^2.6.3"
   }
