@@ -61,6 +61,7 @@ custEvent.prototype.readEmployeeSnapshot = function(engineerId) {
     return new Promise(function(resolve, reject) {
         redisClient.hgetall("employeeSnapshot", function(error, employeeData) {
             var obj = [];
+            console.log(employeeData);
             engineerId.forEach(function(id) {
               var engg =JSON.parse(employeeData[id]);
               engg.engineerId = id;
