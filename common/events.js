@@ -1,8 +1,8 @@
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 var firebase = require("../config/firebase.js");
-var redisClient = require('redis').createClient();
-
+var redisClient = require('redis').createClient(16385,"redis-16385.c11.us-east-1-3.ec2.cloud.redislabs.com",{no_ready_check: true});
+// 14344, 'redis-14344.c10.us-east-1-4.ec2.cloud.redislabs.com', {no_ready_check: true}
 
 function custEvent() {
     var self = this;

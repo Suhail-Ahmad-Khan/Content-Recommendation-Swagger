@@ -33,7 +33,7 @@ commonMethod.updateEmployeeData = function(engineerId, field, obj) {
 /*****      Method is for sending mail ******/
 commonMethod.sendEmail = function (mailOptions) {
     new Promise(function(resolve, reject) {
-  var transporter = nodemailer.createTransport('smtps://noorihamid1994%40gmail.com:sayham2009@smtp.gmail.com');
+  var transporter = nodemailer.createTransport('smtps://fundoohr2016%40gmail.com:bridgeit@smtp.gmail.com');
 
   // send mail with defined transport object
   transporter.sendMail(mailOptions, function(error, info){
