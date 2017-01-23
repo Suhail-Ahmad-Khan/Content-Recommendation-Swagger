@@ -9,21 +9,7 @@ var fs = require('fs');
 
 router.post("/", function(req, res) {
     try {
-      var employeeList = req.body.employeeList;
-// var fields = ['name', 'phone', 'mobile', 'email', 'address', 'notes'];
-var docs = [['Engineer ID','Emplyee Name', 'Account Number', ' Bank Name ', 'IFSC code', 'paySalary'],
-            // ["427188EI","Abhishek Ganguly","1234657998", "SBI", "SBI00027", "Yes"],
-            ["427189EI","Suyash Nanda","1234657998", "BOM", "MAHB00448", "Yes"],
-            ["427190EI","Laxman Nanda","1234657998", "BOI", "BOI00027", "Yes"],
-            ["427191EI","Mohammad Chhotta","1234657998", "SBI", "SBI00027", "Yes"],
-            ["427192EI","Suhail Khan","1234657998", "BOM", "MAHB00001", "Yes"],
-            ["427193EI","Amit Singh","1234657998", "SBI", "SBI00027", "Yes"],
-            ["427194EI","Prashant Sharma","1234657998", "SBI", "SBI00027", "Yes"],
-            ["427195EI","Mukesh Shabanam","1234657998", "SBI", "SBI00027", "Yes"],
-            ["427196EI","Madhu Mati","1234657998", "SBI", "SBI00027", "Yes"],
-            ["427195EI","Pushpa","1234657998", "SBI", "SBI00027", "Yes"],
-            ["427195EI","Seeta","1234657998", "SBI", "SBI00027", "Yes"],
-            ["427195EI","Maya Singh","1234657998", "SBI", "SBI00027", "Yes"]];
+      var selectedEngineer = req.body.selectedEngineer;
  var fieldNames=['Engineer ID','Emplyee Name', 'Account Number', ' Bank Name ', 'IFSC code', 'Pay Salary'];
   var fields=['engineerId','emplyeeName', 'accountNumber', 'bankName', 'ifscCode', 'paySalary'];
   var data=[{"engineerId":"427188EI","emplyeeName":"Abhishek Ganguly","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
@@ -39,20 +25,10 @@ var docs = [['Engineer ID','Emplyee Name', 'Account Number', ' Bank Name ', 'IFS
               {"engineerId":"427195EI","emplyeeName":"Seeta","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
               {"engineerId":"427195EI","emplyeeName":"Maya Singh","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"}];
               var csvData = json2csv({ data, fields,fieldNames });
-
-              fs.writeFile('salaryReport.csv', csvData, function(err) {
-                if (err) throw err;
-                console.log('file saved');
-              });
-
               res.setHeader('Content-disposition', 'attachment; filename=salaryReport.csv');
                 res.set('Content-Type', 'text/csv');
-                res.csv(docs);
-            // res.attachment('salaryReport.csv');
-            // // res.status(200).send("data");
-            // res.send({"csvData":csvData});
+                res.send(csvData);
     } catch (e) {
-      console.log(e);
         res.status(401).send("Bad Parameter or invalid token");
     }
 });
