@@ -5,7 +5,7 @@ var morgan = require('morgan');
 var jwt    = require('jsonwebtoken');
 var app = express();
 
-app.set('port', process.env.NODE_PORT || 3005);
+app.set('port', process.env.NODE_PORT || 3000);
 app.set('host', process.env.NODE_IP || 'localhost');
 
 app.use(cors());

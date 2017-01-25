@@ -6,10 +6,12 @@ var employeeSnapshotEvent = require("../common/events");
 router.put("/", function(req, res) {
     try {
         var temp = req.body;
+
         var obj = {};
         var keys = ["blStartDate", "hiringCity", "fellowshipPeriod", "employeeStatus", "company", "companyJoinDate", "companyLeaveDate", "enggContractInitiated", "enggContractSigned", "compContractInitiated", "compContractSigned", "contractSignDate", "initiateTransfer"];
         keys.forEach(function(k) {
             if (temp[k] === undefined || temp[k] === null || temp[k] === '') {
+		console.log(k,req.body);
                 throw 400;
             } else {
                 obj[k] = temp[k];

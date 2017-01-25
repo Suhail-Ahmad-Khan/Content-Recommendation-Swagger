@@ -46,7 +46,7 @@ function sendMailTo(emailId,employeeName,date) {
   new Promise(function(resolve, reject) {
 
   var mailOptions = {
-      from: '"BridgeLabz Admin" <noorihamid1994@gmail.com>', // sender address
+      from: '"BridgeLabz Admin" <fundoohr2016@gmail.com>', // sender address
       to: emailId, // list of receivers'hamidabdul1994@gmail.com'
       subject: 'Regarding Attendance Fallout ', // Subject line
       // text: 'Hello world ', // plaintext body

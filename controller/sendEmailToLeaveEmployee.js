@@ -44,7 +44,7 @@ function sendMailTo(emailId,employeeName,date) {
 
 
   var mailOptions = {
-      from: '"BridgeLabz Admin" <noorihamid1994@gmail.com>', // sender address
+      from: '"BridgeLabz Admin" <fundoohr2016@gmail.com>', // sender address
       to: emailId, // list of receivers
       subject: 'Regarding Leave  ', // Subject line
       // text: 'Hello world ', // plaintext body

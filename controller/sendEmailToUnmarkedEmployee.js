@@ -41,7 +41,7 @@ function sendMailTo(emailId,employeeName,date) {
   new Promise(function(resolve, reject) {
 // create email Template
   var mailOptions = {
-      from: '"BridgeLabz Admin" <noorihamid1994@gmail.com>', // sender address
+      from: '"BridgeLabz Admin" <fundoohr2016@gmail.com>', // sender address
       to: emailId, // list of receivers
       subject: 'Regarding Attendance', // Subject line
       html: '<b>Hello '+employeeName+'</b><br/><p>Please mark your Attendance for date:  '+date+'</p>Mark Attendance using <a href="http://localhost/fundooHr">http://localhost/fundooHr</a><br/> Thanking you' // html body

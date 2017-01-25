@@ -61,8 +61,8 @@ custEvent.prototype.readEmployeeSnapshot = function(engineerId) {
     return new Promise(function(resolve, reject) {
         redisClient.hgetall("employeeSnapshot", function(error, employeeData) {
             var obj = [];
-            console.log(employeeData);
             engineerId.forEach(function(id) {
+              // if()
               var engg =JSON.parse(employeeData[id]);
               engg.engineerId = id;
                 obj.push(engg);
@@ -81,7 +81,7 @@ custEvent.prototype.searchEmployee = function () {
     var ref = firebase.database().ref("employee");
     ref.once("value",function(value){
       if(value.val()!==null)
-      myCustEvent.emit("employeeList",Object.keys(value.val()));
+      myCustEvent.emit("employeeList",Object.keys(value.val()),value.val());
       else
       myCustEvent.emit("employeeList",[]);
     });

@@ -1,10 +1,8 @@
 var express = require('express');
-var csv = require('express-csv');
 var router = express.Router();
 var commonMethod = require("../common/commonMethod");
 var deriveDataEvent = require("../common/events");
 var json2csv = require('json2csv');
-// var csv = require('csv');
 var fs = require('fs');
 
 router.post("/", function(req, res) {

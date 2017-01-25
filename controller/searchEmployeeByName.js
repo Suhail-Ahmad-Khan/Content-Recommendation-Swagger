@@ -6,7 +6,7 @@ var deriveDataEvent = require("../common/events");
 router.get("/", function(req, res) {
     try {
         deriveDataEvent.searchEmployee();
-        deriveDataEvent.once("employeeList",function(employeeList){
+        deriveDataEvent.once("employeeList",function(employeeList,employeeSnapshot){
         if(employeeList.length!==0){
           deriveDataEvent.readEmployeeSnapshot(employeeList).then(function(data){
             res.send({"employeeList":data.employeeSnapshot});
