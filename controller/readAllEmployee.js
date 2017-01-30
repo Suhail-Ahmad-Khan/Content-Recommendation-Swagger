@@ -6,6 +6,7 @@ var deriveDataEvent = require("../common/events");
 router.get("/", function(req, res) {
     try {
       /*Here we need to call Firebase calling which will fetch intership employee , who are working with tech company*/
+      commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
       commonMethod.readJSON("./data/allEmployee.json").then(function (data) {
         res.send({"allEmployee":JSON.parse(data)})
       });

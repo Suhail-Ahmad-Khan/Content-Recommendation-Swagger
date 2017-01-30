@@ -1,8 +1,17 @@
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 var firebase = require("../config/firebase.js");
-var redisClient = require('redis').createClient(16385,"redis-16385.c11.us-east-1-3.ec2.cloud.redislabs.com",{no_ready_check: true});
+var redisClient = require('redis').createClient();
 // 14344, 'redis-14344.c10.us-east-1-4.ec2.cloud.redislabs.com', {no_ready_check: true}
+// 16385,"redis-16385.c11.us-east-1-3.ec2.cloud.redislabs.com",{no_ready_check: true}, hamidAbdul1994
+var imageUrl="https://firebasestorage.googleapis.com/v0/b/fundoohr-d4100.appspot.com/o/team-male.png?alt=media&token=2d697a35-8fc4-498f-b8bc-64bcadca0500";
+
+// var a = redisClient.scan(0,'MATCH','employeeSnapshot:*',function (err,data) {
+//   console.log(data);
+// });
+// .then(function (err,data) {
+//   console.log(data);
+// })
 
 function custEvent() {
     var self = this;
@@ -20,51 +29,53 @@ module.exports = myCustEvent;
 custEvent.prototype.employeeSnapshot = function(tempObj, engineerId) {
     redisClient.hgetall("employeeSnapshot", function(error, employeeData) {
         if (employeeData === null || employeeData[engineerId] === undefined) {
+            console.log("Data", engineerId, employeeData[engineerId]);
             readEmployeeSnapshot(function(temp) {
+                console.log("Data", temp[engineerId]);
                 tempObj.employeeData = JSON.parse(temp[engineerId]);
+                tempObj.employeeData.imageUrl=imageUrl;
                 myCustEvent.emit("employeeSnapshot", tempObj);
                 redisClient.hmset("employeeSnapshot", temp);
             });
         } else {
             tempObj.employeeData = JSON.parse(employeeData[engineerId]);
+            tempObj.employeeData.imageUrl=imageUrl;`  `
             myCustEvent.emit("employeeSnapshot", tempObj);
         }
     });
 };
 
-custEvent.prototype.createEmployeeLeave = function (engineerId,date) {
+custEvent.prototype.createEmployeeLeave = function(engineerId, date) {
     redisClient.hgetall("employeeLeave", function(error, employeeData) {
         if (employeeData === null || employeeData[date] === undefined) {
 
-          var temp = {};
-          var tempArry=[];
-          tempArry.push(engineerId);
-          temp[date]=JSON.stringify(tempArry);
-          myCustEvent.updateEmployeeLeaveSnapshot(engineerId);
-          redisClient.hmset("employeeLeave", temp);
-        }else {
-          var temp = JSON.parse(employeeData[date]);
-          if (temp.indexOf(engineerId) === -1) {  //Avoid Duplicate
-            temp.push(engineerId);
-            var tempObj = {};
-            tempObj[date] = JSON.stringify(temp);
+            var temp = {};
+            var tempArry = [];
+            tempArry.push(engineerId);
+            temp[date] = JSON.stringify(tempArry);
             myCustEvent.updateEmployeeLeaveSnapshot(engineerId);
-            redisClient.hmset("employeeLeave", tempObj);
-          }
+            redisClient.hmset("employeeLeave", temp);
+        } else {
+            var temp = JSON.parse(employeeData[date]);
+            if (temp.indexOf(engineerId) === -1) { //Avoid Duplicate
+                temp.push(engineerId);
+                var tempObj = {};
+                tempObj[date] = JSON.stringify(temp);
+                myCustEvent.updateEmployeeLeaveSnapshot(engineerId);
+                redisClient.hmset("employeeLeave", tempObj);
+            }
 
         }
-      });
-
-
+    });
 };
 custEvent.prototype.readEmployeeSnapshot = function(engineerId) {
     return new Promise(function(resolve, reject) {
         redisClient.hgetall("employeeSnapshot", function(error, employeeData) {
             var obj = [];
             engineerId.forEach(function(id) {
-              // if()
-              var engg =JSON.parse(employeeData[id]);
-              engg.engineerId = id;
+                var engg = JSON.parse(employeeData[id]);
+                engg.imageUrl=imageUrl;
+                engg.engineerId = id;
                 obj.push(engg);
             });
             var totalEmployee = Object.keys(employeeData).length;
@@ -76,14 +87,14 @@ custEvent.prototype.readEmployeeSnapshot = function(engineerId) {
     });
 }
 
-custEvent.prototype.searchEmployee = function () {
+custEvent.prototype.searchEmployee = function() {
 
     var ref = firebase.database().ref("employee");
-    ref.once("value",function(value){
-      if(value.val()!==null)
-      myCustEvent.emit("employeeList",Object.keys(value.val()),value.val());
-      else
-      myCustEvent.emit("employeeList",[]);
+    ref.once("value", function(value) {
+        if (value.val() !== null)
+            myCustEvent.emit("employeeList", Object.keys(value.val()));
+        else
+            myCustEvent.emit("employeeList", []);
     });
 
 };
@@ -101,7 +112,7 @@ custEvent.prototype.readEmployeeUnmarkedAttendance = function(date, i) {
                 var ref = firebase.database().ref();
                 var empRef = ref.child("employee");
                 var dateSplit = date.split("/");
-                var date1 =dateSplit[0]+"/"+dateSplit[1]+"/day"+dateSplit[2];
+                var date1 = dateSplit[0] + "/" + dateSplit[1] + "/day" + dateSplit[2];
                 var markedRef = ref.child("employeeAttendance").orderByChild(date1 + "/markedStatus").startAt("");
                 markedRef.on("value", function(data) {
                     empRef.on("value", function(empData) {
@@ -113,7 +124,7 @@ custEvent.prototype.readEmployeeUnmarkedAttendance = function(date, i) {
                             if (i !== undefined) {
                                 resolve({
                                     "day": i,
-                                    "unmarked": String(Object.keys(empData.val()).length)  //String Form
+                                    "unmarked": String(Object.keys(empData.val()).length) //String Form
                                 });
                             } else {
                                 resolve(Object.keys(empData.val()));
@@ -155,67 +166,73 @@ custEvent.prototype.readEmployeeUnmarkedAttendance = function(date, i) {
         });
     });
 };
-custEvent.prototype.readFalloutEmployee = function (date,monthDays) {
-  return new Promise(function(resolve, reject) {
-      redisClient.hgetall("employeeUnmarkedAttendance", function(error, employeeAttendance) {
-        var obj = {};
-        for (var key=1;key<=monthDays;key++) {
-        var temp =employeeAttendance[date+"/"+key]!==undefined ? (JSON.parse(employeeAttendance[date+"/"+key])): [];
-        var p = temp.forEach(function(value){
-          if(obj[value]!==undefined)
-          {
-            obj[value]={"value":++obj[value].value};
-          }else {
-            obj[value]={"value":0};
-          }
-        });
+custEvent.prototype.readFalloutEmployee = function(date, monthDays) {
+    return new Promise(function(resolve, reject) {
+        redisClient.hgetall("employeeUnmarkedAttendance", function(error, employeeAttendance) {
+            var obj = {};
+            for (var key = 1; key <= monthDays; key++) {
+                var temp = employeeAttendance[date + "/" + key] !== undefined ? (JSON.parse(employeeAttendance[date + "/" + key])) : [];
+                var p = temp.forEach(function(value) {
+                    if (obj[value] !== undefined) {
+                        obj[value] = {
+                            "value": ++obj[value].value
+                        };
+                    } else {
+                        obj[value] = {
+                            "value": 0
+                        };
+                    }
+                });
 
-        }
-        Promise.all([p]).then(function(){
-          var temp =[];
-          for (var i in obj) {
-            if(obj[i].value>=3){
-              temp.push(i);
             }
-          }
-          resolve(temp);
+            Promise.all([p]).then(function() {
+                var temp = [];
+                for (var i in obj) {
+                    if (obj[i].value >= 3) {
+                        temp.push(i);
+                    }
+                }
+                resolve(temp);
+            });
         });
-      });
     });
 };
 
-custEvent.prototype.readLeaveEmployee = function (date,monthDays) {
-  return new Promise(function(resolve, reject) {
-      redisClient.hgetall("employeeLeave", function(error, employeeLeave) {
-        var obj = {};
-        if (employeeLeave===null) {
-          resolve([]);
-        }else {
+custEvent.prototype.readLeaveEmployee = function(date, monthDays) {
+    return new Promise(function(resolve, reject) {
+        redisClient.hgetall("employeeLeave", function(error, employeeLeave) {
+            var obj = {};
+            if (employeeLeave === null) {
+                resolve([]);
+            } else {
 
 
-        for (var key=1;key<=monthDays;key++) {
-        var temp =employeeLeave[date+"/"+key]!==undefined ? (JSON.parse(employeeLeave[date+"/"+key])): [];
-        var p = temp.forEach(function(value){
-          if(obj[value]!==undefined)
-          {
-            obj[value]={"value":++obj[value].value};
-          }else {
-            obj[value]={"value":1};
-          }
+                for (var key = 1; key <= monthDays; key++) {
+                    var temp = employeeLeave[date + "/" + key] !== undefined ? (JSON.parse(employeeLeave[date + "/" + key])) : [];
+                    var p = temp.forEach(function(value) {
+                        if (obj[value] !== undefined) {
+                            obj[value] = {
+                                "value": ++obj[value].value
+                            };
+                        } else {
+                            obj[value] = {
+                                "value": 1
+                            };
+                        }
+                    });
+
+                }
+                Promise.all([p]).then(function() {
+                    var temp = [];
+                    for (var i in obj) {
+                        if (obj[i].value >= 2) {
+                            temp.push(i);
+                        }
+                    }
+                    resolve(temp);
+                });
+            } //Else End
         });
-
-        }
-        Promise.all([p]).then(function(){
-          var temp =[];
-          for (var i in obj) {
-            if(obj[i].value>=2){
-              temp.push(i);
-            }
-          }
-          resolve(temp);
-        });
-      }//Else End
-      });
     });
 };
 /****       creatEmployeeUnmarkedAttendance Method       *****/
@@ -252,25 +269,25 @@ custEvent.prototype.updateEmployeeHRSnapshot = function(engineerId, obj) {
         redisClient.hmset("employeeSnapshot", tempObj);
     });
 };
-custEvent.prototype.updateEmployeeLeaveSnapshot = function (engineerId) {
-  /** COde for Increament the leaveTaken by eningeer in redis**/
-  redisClient.hgetall("employeeSnapshot", function(error, employeeSData) {
-    if (employeeSData === null || employeeSData[engineerId] === undefined) {
-        readEmployeeSnapshot(function(temp) {
-            var tempObj = JSON.parse(temp[engineerId]);
-            tempObj.leaveTaken+=1;
+custEvent.prototype.updateEmployeeLeaveSnapshot = function(engineerId) {
+    /** COde for Increament the leaveTaken by eningeer in redis**/
+    redisClient.hgetall("employeeSnapshot", function(error, employeeSData) {
+        if (employeeSData === null || employeeSData[engineerId] === undefined) {
+            readEmployeeSnapshot(function(temp) {
+                var tempObj = JSON.parse(temp[engineerId]);
+                tempObj.leaveTaken += 1;
+                var empTemp = {};
+                empTemp[engineerId] = JSON.stringify(tempObj);
+                redisClient.hmset("employeeSnapshot", empTemp);
+            });
+        } else {
+            var tempObj = JSON.parse(employeeSData[engineerId]);
+            tempObj.leaveTaken += 1;
             var empTemp = {};
             empTemp[engineerId] = JSON.stringify(tempObj);
             redisClient.hmset("employeeSnapshot", empTemp);
-        });
-    } else {
-        var tempObj = JSON.parse(employeeSData[engineerId]);
-        tempObj.leaveTaken+=1;
-        var empTemp = {};
-        empTemp[engineerId] = JSON.stringify(tempObj);
-        redisClient.hmset("employeeSnapshot", empTemp);
-    }
-  });
+        }
+    });
 
 };
 /*****         updateEmployeePersonalSnapshot Method        *****/
@@ -286,6 +303,35 @@ custEvent.prototype.updateEmployeePersonalSnapshot = function(engineerId, obj) {
     });
 
 };
+custEvent.prototype.dummy = function () {
+  // redisClient
+  var set_size = 20;
+  redisClient.sadd("bigset", "a member");
+redisClient.sadd("bigset", "another member");
+
+while (set_size > 0) {
+    redisClient.sadd("bigset", "member " + set_size);
+    set_size -= 1;
+}
+redisClient.smembers("bigset", function(err, reply) {
+    console.log(reply);
+});
+// redisClient.multi()
+//     .scard("bigset")
+//     .smembers("bigset")
+//     .keys("*", function (err, replies) {
+//         // NOTE: code in this callback is NOT atomic
+//         // this only happens after the the .exec call finishes.
+//         redisClient.mget(replies, redis.print);
+//     })
+//     .dbsize()
+//     .exec(function (err, replies) {
+//         console.log("MULTI got " + replies.length + " replies");
+//         replies.forEach(function (reply, index) {
+//             console.log("Reply " + index + ": " + reply.toString());
+//         });
+//     });
+}();
 
 function removeArrayData(array, element) {
     var index = array.indexOf(element);

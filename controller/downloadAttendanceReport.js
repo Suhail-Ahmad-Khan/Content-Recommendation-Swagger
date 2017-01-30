@@ -8,7 +8,7 @@ var options = { format: 'Letter' };
 
 router.post("/",function (req, res) {
   try {
-
+// commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
 var info = {
   name: 'BridgeLabz',
   description: 'Some Data'
@@ -33,7 +33,6 @@ stream.once("end",function (data) {
 })
 
 } catch (e) {
-  console.log(e);
     res.status(401).send("Bad Parameter or invalid token");
 }
 });

@@ -5,8 +5,11 @@ var deriveDataEvent = require("../common/events");
 
 router.get("/", function(req, res) {
     try {
-        deriveDataEvent.searchEmployee();
-        deriveDataEvent.once("employeeList",function(employeeList,employeeSnapshot){
+        // deriveDataEvent.searchEmployee();
+        commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
+        //deriveDataEvent.once("employeeList",function(employeeList){
+        commonMethod.readJSON("./data/dummy.json").then(function (data) {
+          var employeeList = JSON.parse(data);
         if(employeeList.length!==0){
           deriveDataEvent.readEmployeeSnapshot(employeeList).then(function(data){
             res.send({"employeeList":data.employeeSnapshot});
@@ -14,11 +17,12 @@ router.get("/", function(req, res) {
         }else {
           res.status(404).send("Not Employee available");
         }
-
         });
     } catch (e) {
-        res.status(401).send("Bad Parameter or invalid token");
-    }
+      if (e === 400)
+          res.status(400).send("Bad Request Parameter");
+      else
+          res.status(401).send("invalid token");    }
 });
 
 module.exports = router;

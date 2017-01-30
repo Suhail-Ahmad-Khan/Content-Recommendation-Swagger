@@ -11,7 +11,7 @@ router.get("/", function(req, res) {
             if(timeStamp===undefined || timeStamp===null || timeStamp=== ''){
               throw 400;
             }
-
+            commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
         deriveDataEvent.readEmployeeUnmarkedAttendance(date).then(function(attendance){
             deriveDataEvent.readEmployeeSnapshot(attendance).then(function(data){
               obj.umarkedEmployee=data.employeeSnapshot;

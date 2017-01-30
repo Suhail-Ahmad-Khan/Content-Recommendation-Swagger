@@ -7,7 +7,7 @@ router.put("/", function(req, res) {
     try {
         var temp = req.body;
         var obj = {};
-        var keys = ["employeeName", "emailId", "mobile", "dateOfBirth", "fatherName", "fatherMobile", "occupation", "annualSalary", "mumbaiAddress", "permanentAddress"];
+        var keys = ["employeeName", "emailId", "mobile", "dateOfBirth", "fatherName", "fatherMobile", "occupation", "annualSalary", "mumbaiAddress", "permenantAddress"];
         keys.forEach(function(k) {
             if (temp[k] === undefined || temp[k] === null || temp[k] === '') {
                 throw 400;

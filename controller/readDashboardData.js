@@ -18,13 +18,16 @@ router.get("/", function(req, res) {
             date = commonMethod.getFullTimeStamp(timeStamp);
             time = date.split("/");
             today=today.split("/");
+            commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
+
             var tempData=req.query.timeStamp;
+
               if(tempData===undefined || tempData===null || tempData=== ''){
                 throw 400;
               }
 
             // if(time[0]<=new Date().getFullYear() && time[1]<=new Date().getMonth()){
-            commonMethod.verifyToken(req.query.token);
+            commonMethod.verifyToken(req.header("x-token"));
 
         deriveDataEvent.readTotalEmployee();
         deriveDataEvent.on("totalEmployee", function(data) {
@@ -37,6 +40,7 @@ router.get("/", function(req, res) {
         date = commonMethod.getMonthTimeStamp(timeStamp),
         days = commonMethod.monthDays(timeStamp),
         time = date.split("/");
+        console.log(date);
         if(time[0]<today[0] || (time[0]<=today[0] && time[1]<=today[1])){
          var promise2 =deriveDataEvent.readFalloutEmployee(date,days).then(function(data){
            falloutEmployee= data.length;
@@ -65,7 +69,7 @@ router.get("/", function(req, res) {
       if(e===400)
       res.status(400).send("Bad Request Parameter");
       else
-        res.status(401).send("Bad Parameter or invalid token");
+        res.status(401).send("invalid token");
     }
 });
 

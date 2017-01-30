@@ -9,6 +9,7 @@ router.put("/", function(req, res) {
 
         var obj = {};
         var keys = ["blStartDate", "hiringCity", "fellowshipPeriod", "employeeStatus", "company", "companyJoinDate", "companyLeaveDate", "enggContractInitiated", "enggContractSigned", "compContractInitiated", "compContractSigned", "contractSignDate", "initiateTransfer"];
+        commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
         keys.forEach(function(k) {
             if (temp[k] === undefined || temp[k] === null || temp[k] === '') {
 		console.log(k,req.body);

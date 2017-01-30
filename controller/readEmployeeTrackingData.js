@@ -6,7 +6,8 @@ var deriveDataEvent = require("../common/events");
 router.get("/",function(req,res){
   try {
   var tempData = req.query;
-  var keys =["engineerId","token"];
+  var keys =["engineerId"];
+  commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
   keys.forEach(function (k) {
     if(tempData[k]===undefined || tempData[k]===null || tempData[k]=== ''){
       throw 400;

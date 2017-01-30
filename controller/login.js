@@ -11,6 +11,7 @@ router.post("/",function(req,res){
     }).then(function(data){
       if (data!==undefined) {
           token=commonMethod.generateToken(email);
+          res.setHeader("x-token",token);
       res.send({token,status:200,message:"login success"});
       }
     });

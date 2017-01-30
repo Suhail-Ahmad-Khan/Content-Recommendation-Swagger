@@ -12,8 +12,9 @@ router.get("/",function(req,res){
         date = commonMethod.getMonthTimeStamp(timeStamp),
         time = date.split("/"),
         today = commonMethod.getMonthTimeStamp(Date.now()).split("/");
+        commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
         var tempData = req.query;
-        var keys =["engineerId","token","timeStamp"];
+        var keys =["engineerId","timeStamp"];
         keys.forEach(function (k) {
           if(tempData[k]===undefined || tempData[k]===null || tempData[k]=== ''){
             throw 400;
@@ -39,7 +40,7 @@ router.get("/",function(req,res){
     if(e===400)
     res.status(400).send("Bad Request Parameter");
     else
-    res.status(401).send("Bad Parameter or invalid token");
+    res.status(401).send("invalid token");
   }
 });
 

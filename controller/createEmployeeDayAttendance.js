@@ -15,6 +15,7 @@ router.post("/", function(req, res) {
             temp[k]=tempData[k];
           }
         });
+        commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
 
         var date = commonMethod.getFullTimeStamp(tempData.timeStamp);
         if (temp.attendanceStatus === "Leave") {

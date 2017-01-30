@@ -8,9 +8,10 @@ router.post("/", function(req, res) {
         var temp = req.body;
         var timeStamp = temp.timeStamp;
         var date = commonMethod.getFullTimeStamp(timeStamp);
-        if(timeStamp===undefined || timeStamp===null || timeStamp=== ''){
+        if(timeStamp===undefined || timeStamp===null || timeStamp===''){
           throw 400;
         }
+        commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
         var promise = deriveDataEvent.readEmployeeUnmarkedAttendance(date).then(function(data){
             deriveDataEvent.readEmployeeSnapshot(data).then(function(engineerData){
             engineerData.employeeSnapshot.forEach(function(engineerData){
@@ -27,6 +28,7 @@ router.post("/", function(req, res) {
         });
         //sendMailTo()
     } catch (e) {
+      console.log(e);
       if(e===400)
       res.status(400).send("Bad Request Parameter");
       else

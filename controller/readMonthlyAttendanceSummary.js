@@ -11,7 +11,8 @@ router.get("/", function(req, res) {
             obj = {},
             monthAttendance = [],
             totalEmployee;
-            
+            commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
+
             if(timeStamp===undefined || timeStamp===null || timeStamp=== ''){
               throw 400;
             }

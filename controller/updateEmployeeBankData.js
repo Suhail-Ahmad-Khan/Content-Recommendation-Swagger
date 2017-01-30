@@ -7,6 +7,7 @@ router.put("/", function(req, res) {
         var tempData = req.body;
         var obj = {};
         var keys = ["accountNumber", "bankName", "ifscCode", "pan", "paySalary", "reason"];
+        commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
         keys.forEach(function(k) {
             if (tempData[k] === undefined || tempData[k] === null || tempData[k] === '') {
                 throw 400;

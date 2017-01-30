@@ -8,20 +8,17 @@ var fs = require('fs');
 router.post("/", function(req, res) {
     try {
       var selectedEngineer = req.body.selectedEngineer;
+      commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
  var fieldNames=['Engineer ID','Emplyee Name', 'Account Number', ' Bank Name ', 'IFSC code', 'Pay Salary'];
+
   var fields=['engineerId','emplyeeName', 'accountNumber', 'bankName', 'ifscCode', 'paySalary'];
-  var data=[{"engineerId":"427188EI","emplyeeName":"Abhishek Ganguly","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
-              {"engineerId":"427189EI","emplyeeName":"Suyash Nanda","accountNumber":"1234657998","bankName":"BOM", "ifscCode":"MAHB00448", "paySalary":"Yes"},
-              {"engineerId":"427190EI","emplyeeName":"Laxman Nakka","accountNumber":"1234657998","bankName":"BOI", "ifscCode":"BOI00027", "paySalary":"Yes"},
-              {"engineerId":"427191EI","emplyeeName":"Mohammad Chhotta","accountNumber":"1234657998","bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
-              {"engineerId":"427192EI","emplyeeName":"Suhail Khan","accountNumber":"1234657998", "bankName":"BOM", "ifscCode":"MAHB00001", "paySalary":"Yes"},
-              {"engineerId":"427193EI","emplyeeName":"Amit Singh","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
-              {"engineerId":"427194EI","emplyeeName":"Prashant Sharma","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
-              {"engineerId":"427195EI","emplyeeName":"Mukesh Shabanam","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
-              {"engineerId":"427196EI","emplyeeName":"Madhu Mati","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
-              {"engineerId":"427195EI","emplyeeName":"Pushpa","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
-              {"engineerId":"427195EI","emplyeeName":"Seeta","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
-              {"engineerId":"427195EI","emplyeeName":"Maya Singh","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"}];
+
+  var data=[];
+  selectedEngineer.forEach(function (key,value) {
+    var temp = {"engineerId":"427188EI","emplyeeName":"Abhishek Ganguly","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"};
+    temp.engineerId=key;
+    data.push(temp);
+  });
               var csvData = json2csv({ data, fields,fieldNames });
               res.setHeader('Content-disposition', 'attachment; filename=salaryReport.csv');
                 res.set('Content-Type', 'text/csv');
@@ -44,7 +41,17 @@ module.exports = router;
   res.write(chunks);
   res.end();
 });
-
+{"engineerId":"427189EI","emplyeeName":"Suyash Nanda","accountNumber":"1234657998","bankName":"BOM", "ifscCode":"MAHB00448", "paySalary":"Yes"},
+{"engineerId":"427190EI","emplyeeName":"Laxman Nakka","accountNumber":"1234657998","bankName":"BOI", "ifscCode":"BOI00027", "paySalary":"Yes"},
+{"engineerId":"427191EI","emplyeeName":"Mohammad Chhotta","accountNumber":"1234657998","bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
+{"engineerId":"427192EI","emplyeeName":"Suhail Khan","accountNumber":"1234657998", "bankName":"BOM", "ifscCode":"MAHB00001", "paySalary":"Yes"},
+{"engineerId":"427193EI","emplyeeName":"Amit Singh","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
+{"engineerId":"427194EI","emplyeeName":"Prashant Sharma","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
+{"engineerId":"427195EI","emplyeeName":"Mukesh Shabanam","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
+{"engineerId":"427196EI","emplyeeName":"Madhu Mati","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
+{"engineerId":"427195EI","emplyeeName":"Pushpa","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
+{"engineerId":"427195EI","emplyeeName":"Seeta","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"},
+{"engineerId":"427195EI","emplyeeName":"Maya Singh","accountNumber":"1234657998", "bankName":"SBI", "ifscCode":"SBI00027", "paySalary":"Yes"}
 
 res.attachment('data.csv');
 res.status(200).send(data);

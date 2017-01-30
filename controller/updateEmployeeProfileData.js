@@ -7,6 +7,7 @@ router.put("/", function(req, res) {
         var temp = req.body;
         var obj = {};
         var keys = ["diploma", "degree", "discipline", "yearOfPassing", "aggregateIn", "finalYearPercentage", "trainingInstitute", "trainingPeriod", "training"];
+        commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
         keys.forEach(function(k) {
             if (temp[k] === undefined || temp[k] === null || temp[k] === '') {
                 throw 400;

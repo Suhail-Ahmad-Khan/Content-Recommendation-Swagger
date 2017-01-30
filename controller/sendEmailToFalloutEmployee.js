@@ -9,7 +9,7 @@ router.post("/", function(req, res) {
         var temp = req.body;
         var timeStamp = temp.timeStamp;
         var date = commonMethod.getMonthTimeStamp(timeStamp);
-
+        commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
         if(timeStamp===undefined || timeStamp===null || timeStamp=== ''){
           throw 400;
         }

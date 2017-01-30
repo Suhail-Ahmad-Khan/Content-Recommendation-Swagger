@@ -130,7 +130,7 @@ commonMethod.verifyToken = function(token){
   try {
   jwt.decode(token, config.TOKEN_SECRET);
   } catch (e) {
-    throw 404;
+    throw 401;
    }
 
 }

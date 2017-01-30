@@ -8,7 +8,7 @@ try {
   var timeStamp = req.query.timeStamp,
   date = commonMethod.getMonthTimeStamp(timeStamp),
   days = commonMethod.monthDays(timeStamp);
-
+  commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
     if(timeStamp===undefined || timeStamp===null || timeStamp=== ''){
       throw 400;
     }
