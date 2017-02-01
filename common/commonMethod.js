@@ -134,6 +134,7 @@ commonMethod.verifyToken = function(token){
    }
 
 }
+commonMethod.month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 commonMethod.getFullTimeStamp = function(timestamp) {
     if (timestamp !== undefined) {
@@ -142,9 +143,8 @@ commonMethod.getFullTimeStamp = function(timestamp) {
     } else {
         now = new Date();
     }
-    var month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     return (now.getFullYear() + "/" +
-        (month[now.getMonth()]) + '/' +
+        (commonMethod.month[now.getMonth()]) + '/' +
         now.getDate());
 }
 commonMethod.getMonthTimeStamp = function(timestamp) {
@@ -154,9 +154,8 @@ commonMethod.getMonthTimeStamp = function(timestamp) {
     } else {
         now = new Date();
     }
-    var month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     return (now.getFullYear() + "/" +
-        (month[now.getMonth()] ));
+        (commonMethod.month[now.getMonth()] ));
 }
 
 commonMethod.isSunday = function(year,month ,day){

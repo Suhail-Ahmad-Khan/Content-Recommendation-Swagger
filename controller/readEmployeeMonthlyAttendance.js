@@ -21,7 +21,7 @@ router.get("/",function(req,res){
           }
         });
 
-        if(time[0]<today[0] || (time[0]<=today[0] && time[1]<=today[1])){
+        if(time[0]<today[0] || (time[0]<=today[0] && commonMethod.month.indexOf(time[1])<=commonMethod.month.indexOf(today[1]))){
         commonMethod.readEmployeeAttendance(engineerId,date).then(function(data){
           var tempObj={token};
           tempObj.attendanceData=data;

@@ -40,8 +40,7 @@ router.get("/", function(req, res) {
         date = commonMethod.getMonthTimeStamp(timeStamp),
         days = commonMethod.monthDays(timeStamp),
         time = date.split("/");
-        console.log(date);
-        if(time[0]<today[0] || (time[0]<=today[0] && time[1]<=today[1])){
+        if(time[0]<today[0] || (time[0]<=today[0] && commonMethod.month.indexOf(time[1])<=commonMethod.month.indexOf(today[1]))){
          var promise2 =deriveDataEvent.readFalloutEmployee(date,days).then(function(data){
            falloutEmployee= data.length;
          });

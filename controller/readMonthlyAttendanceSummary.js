@@ -24,7 +24,7 @@ router.get("/", function(req, res) {
         var tSplit = today.split("/");
         var dSplit = date.split("/");
         for (var i = 1; i <= commonMethod.monthDays(timeStamp); i++) {
-            if (((tSplit[0] === dSplit[0] && tSplit[1] === dSplit[1]) && tSplit[2] <= i )|| commonMethod.isSunday(dSplit[0],dSplit[1],i)) {
+            if (((tSplit[0] === dSplit[0] && tSplit[1] === commonMethod.month.indexOf(dSplit[1])) && tSplit[2] <= i )|| commonMethod.isSunday(dSplit[0],dSplit[1],i)) {
                 monthAttendance.push({
                     "day": i,
                     "unmarked": "-"

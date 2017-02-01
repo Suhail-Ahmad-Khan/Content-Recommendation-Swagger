@@ -4,7 +4,8 @@ var firebase = require("../config/firebase.js");
 var redisClient = require('redis').createClient();
 // 14344, 'redis-14344.c10.us-east-1-4.ec2.cloud.redislabs.com', {no_ready_check: true}
 // 16385,"redis-16385.c11.us-east-1-3.ec2.cloud.redislabs.com",{no_ready_check: true}, hamidAbdul1994
-var imageUrl="https://firebasestorage.googleapis.com/v0/b/fundoohr-d4100.appspot.com/o/team-male.png?alt=media&token=2d697a35-8fc4-498f-b8bc-64bcadca0500";
+// var imageUrl="https://firebasestorage.googleapis.com/v0/b/fundoohr-d4100.appspot.com/o/team-male.png?alt=media&token=2d697a35-8fc4-498f-b8bc-64bcadca0500";
+var imageUrl= "http://192.168.0.10:3000/image2.jpg";
 
 // var a = redisClient.scan(0,'MATCH','employeeSnapshot:*',function (err,data) {
 //   console.log(data);
@@ -303,35 +304,31 @@ custEvent.prototype.updateEmployeePersonalSnapshot = function(engineerId, obj) {
     });
 
 };
-custEvent.prototype.dummy = function () {
-  // redisClient
-  var set_size = 20;
-  redisClient.sadd("bigset", "a member");
-redisClient.sadd("bigset", "another member");
 
-while (set_size > 0) {
-    redisClient.sadd("bigset", "member " + set_size);
-    set_size -= 1;
-}
-redisClient.smembers("bigset", function(err, reply) {
-    console.log(reply);
+
+
+custEvent.prototype.dummy = function (data) {
+  return new Promise(function(resolve, reject) {
+        redisClient.sadd("searchKey", data);
+redisClient.smembers("searchKey", function(err, reply) {
+    resolve(reply);
 });
-// redisClient.multi()
-//     .scard("bigset")
-//     .smembers("bigset")
-//     .keys("*", function (err, replies) {
-//         // NOTE: code in this callback is NOT atomic
-//         // this only happens after the the .exec call finishes.
-//         redisClient.mget(replies, redis.print);
-//     })
-//     .dbsize()
-//     .exec(function (err, replies) {
-//         console.log("MULTI got " + replies.length + " replies");
-//         replies.forEach(function (reply, index) {
-//             console.log("Reply " + index + ": " + reply.toString());
-//         });
-//     });
-}();
+});
+};
+/** function Matching the pattern***/
+custEvent.prototype.searchDummy = function (searchValue,cursor) {
+  return new Promise(function(resolve, reject) {
+    var tempArray = [];
+          redisClient.sscan('searchKey',cursor,'MATCH',searchValue,function (err,replay) {
+          if (err) {
+            console.log(err);
+            reject(err);
+          }
+          resolve({"searchKey":replay[1],"cursor":replay[0]});
+          });
+    });
+
+};
 
 function removeArrayData(array, element) {
     var index = array.indexOf(element);
@@ -365,10 +362,3 @@ function readEmployeeSnapshot(callback) {
     });
 
 }
-/*function isBigEnough(value) {
-  return function(element, index, array) {
-    if(element >= value)
-    return index;
-  }
-}
-var filtered = [10, 15, 8, 130, 44].filter(isBigEnough(10));*/
