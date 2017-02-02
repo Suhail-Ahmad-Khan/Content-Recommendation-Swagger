@@ -57,6 +57,6 @@ var deriveDataEvent = require("../common/events");
       });
         res.send({"searchValue":tempData,"cursor":data.cursor});
     })
-  })
+  });
 
 module.exports = router;

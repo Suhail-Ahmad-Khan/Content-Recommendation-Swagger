@@ -50,7 +50,7 @@ function sendMailTo(emailId,employeeName,date) {
       to: emailId, // list of receivers'hamidabdul1994@gmail.com'
       subject: 'Regarding Attendance Fallout ', // Subject line
       // text: 'Hello world ', // plaintext body
-      html: '<b>Hello '+employeeName+'</b><br/><p>It is to bring to your kind notice That you have failed to mark your attendance for the past three days.Please do so immediately </p><br/>Mark Attendance using <a href="http://localhost/fundooHr">http://localhost/fundooHr</a><br/>\
+      html: '<b>Hello '+employeeName+'!</b><br/><p>It is to bring to your kind notice That you have failed to mark your attendance for three and more than three days in a month '+date+'.Please do so immediately </p><br/>Mark Attendance using <a href="http://localhost/fundooHr">http://localhost/fundooHr</a><br/>\
       If you have any queries please contact admin using the given link :<a href="http://localhost/fundooHrAdmin">http://localhost/fundooHrAdmin</a><br/> Thanking you' // html body
   };
 

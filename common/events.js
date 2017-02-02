@@ -5,7 +5,7 @@ var redisClient = require('redis').createClient();
 // 14344, 'redis-14344.c10.us-east-1-4.ec2.cloud.redislabs.com', {no_ready_check: true}
 // 16385,"redis-16385.c11.us-east-1-3.ec2.cloud.redislabs.com",{no_ready_check: true}, hamidAbdul1994
 // var imageUrl="https://firebasestorage.googleapis.com/v0/b/fundoohr-d4100.appspot.com/o/team-male.png?alt=media&token=2d697a35-8fc4-498f-b8bc-64bcadca0500";
-var imageUrl= "http://192.168.0.10:3000/image2.jpg";
+var imageUrl= "http://192.168.0.6:3000/image2.jpg";
 
 // var a = redisClient.scan(0,'MATCH','employeeSnapshot:*',function (err,data) {
 //   console.log(data);

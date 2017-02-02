@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var options = {format: 'Letter'};
-var pdf = require('html-pdf');
+var htmlToPdf = require('html-to-pdf');
 var mu = require("mu2");
 
 var options = { format: 'Letter' };
@@ -21,15 +21,19 @@ stream.on("data",function (data) {
 });
 
 stream.once("end",function (data) {
-  pdf.create(template, options).toFile('./attendance/attendance.pdf', function (err, result) {
-       if (err) {
-           return res.status(400).send({
-               message: errorHandler.getErrorMessage(err)
-           });
-       }else {
-         res.send("Done");
-       }
-    });
+  htmlToPdf.convertHTMLString(template, './attendance/attendance.pdf',
+    function (error, success) {
+        if (error) {
+            console.log('Oh noes! Errorz!');
+            console.log(error);
+        } else {
+            console.log('Woot! Success!');
+            console.log(success);
+		res.send("Done");
+        }
+    }
+);
+
 })
 
 } catch (e) {
