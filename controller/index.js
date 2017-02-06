@@ -51,7 +51,6 @@ var deriveDataEvent = require("../common/events");
     var temp ="*"+req.params.searchKey+"*";
     var cursor = req.params.cursor || "0";
     deriveDataEvent.searchDummy(temp,cursor).then(function (data) {
-      console.log(data);
       var tempData = data.searchKey.map(function (itm) {
         return JSON.parse(itm);
       });

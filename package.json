@@ -1,33 +1,35 @@
 {
-  "name": "fundoo-hr",
+  "name": "fundoohr",
   "version": "1.0.0",
-  "description": "BridgeLabz BackEnd",
+  "description": "Fundoo HR Back ENd",
   "main": "server.js",
   "directories": {
     "doc": "doc"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "keywords": [
-    "DashBoard"
-  ],
-  "author": "Hamid Raza Noori",
-  "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.15.2",
-    "cors": "^2.8.1",
-    "express": "^4.14.0",
-    "firebase": "^3.6.4",
+    "archiver": "^1.3.0",
     "html-to-pdf": "^0.1.11",
     "json2csv": "^3.7.3",
     "jsonwebtoken": "^7.2.1",
-    "jwt-simple": "^0.5.1",
-    "morgan": "^1.7.0",
-    "mu2": "^0.5.21",
-    "node-redis-streamify": "^0.1.6",
-    "nodemailer": "^2.7.0",
-    "redis": "^2.6.3"
-  }
+    "node-redis-streamify": "^0.1.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BridgeLabzSource/FundooHRbackend.git"
+  },
+  "keywords": [
+    "Node",
+    "JS"
+  ],
+  "author": "Hamid Raza Noori",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BridgeLabzSource/FundooHRbackend/issues"
+  },
+  "homepage": "https://github.com/BridgeLabzSource/FundooHRbackend#readme"
 }
