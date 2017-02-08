@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var zip = require('express-zip');
 var options = {
     format: 'Letter'
 };
+var path = require('path');
 var htmlToPdf = require('html-to-pdf');
 var mu = require("mu2");
 var archiver = require('archiver');
@@ -47,7 +49,7 @@ router.post("/", function(req, res) {
             });
             stream.once("end", function(data) {
                 var fileName = 'attendance/attendance-' + temp.companyName + '.pdf';
-                fileList.push(fileName);
+                fileList.push({"path":fileName,"name":path.basename(fileName)});
                 htmlToPdf.convertHTMLString(template, fileName,
                     function(error, success) {
                         if (error) {
@@ -57,41 +59,46 @@ router.post("/", function(req, res) {
                           i++;
                             if (i === length) {
                               console.log(fileList);
-                              console.log("runnning::",i);
-                                var output = fs.createWriteStream('example.zip');
+                              res.zip(fileList);
+                                /*var output = fs.createWriteStream('report.zip');
+                                // var archive = archiver('zip');
                                 var archive = archiver('zip', {
                                     store: true // Sets the compression method to STORE.
                                 });
 
                                 // listen for all archive data to be written
                                 output.on('close', function() {
-                                  res.send("done");
+                                  res.sendFile("report.zip");
+                                  // res.send("done");
                                     console.log(archive.pointer() + ' total bytes');
                                     console.log('archiver has been finalized and the output file descriptor has closed.');
                                 });
                                 // good practice to catch this error explicitly
                                 archive.on('error', function(err) {
                                     throw err;
-                                });
+                                });*/
+                                // archive.on('close', function() {
+                                //     // res.send("done");
+                                //     console.log(archive.pointer() + ' total bytes');
+                                //     console.log('archiver has been finalized and the output file descriptor has closed.');
+                                // });
+                                // // good practice to catch this error explicitly
+                                // archive.on('error', function(err) {
+                                //     throw err;
+                                // });
 
-                                var archive = archiver('zip', {
-                                    store: true // Sets the compression method to STORE.
-                                });
+
+                                // res.attachment('report.zip');
+                                /*archive.pipe(output);
+
                                 	fileList.forEach(function(value,key){
-                                	archive.append(fs.createReadStream(value), { name: value });
-                                  //
-                                  // if(j===len)
-                                  // {
-                                  //   console.log("exx");
-                                  // //   archive.pipe(output);
-                                  // // archive.finalize();
-                                  //   // pipe archive data to the file
-                                  // }else {
-                                  //   console.log("else");
-                                  // }
+                                	// archive.append(fs.createReadStream(value), { name: value });
+                                  archive.file(value, { name: path.basename(value)});
+
                                 	});
-                                  archive.pipe(output);
-                                  archive.finalize();
+
+                                  // archive.pipe(output);
+                                  archive.finalize();*/
                             }
                         }
                     });
