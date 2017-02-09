@@ -12,6 +12,10 @@ router.get("/", function(req, res) {
           var employeeList = JSON.parse(data);
         if(employeeList.length!==0){
           deriveDataEvent.readEmployeeSnapshot(employeeList).then(function(data){
+            //Sorting As per Name
+            data.employeeSnapshot.sort(function (a,b) {
+              return a.employeeName.charCodeAt(0) - b.employeeName.charCodeAt(0);
+            });
             res.send({"employeeList":data.employeeSnapshot});
           });
         }else {

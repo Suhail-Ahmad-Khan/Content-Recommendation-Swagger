@@ -58,8 +58,8 @@ router.post("/", function(req, res) {
                         } else {
                           i++;
                             if (i === length) {
-                              console.log(fileList);
-                              res.zip(fileList);
+                              // console.log(fileList);
+                              res.zip(fileList,'report.zip');
                                 /*var output = fs.createWriteStream('report.zip');
                                 // var archive = archiver('zip');
                                 var archive = archiver('zip', {
