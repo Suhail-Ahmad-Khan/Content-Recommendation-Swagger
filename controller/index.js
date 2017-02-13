@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var deriveDataEvent = require("../common/events");
 
-
   router.use("/userValidate",require("./userValidate"));
   router.use("/login",require("./login"));
   router.use("/signup",require("./signup"));
@@ -37,6 +36,8 @@ var deriveDataEvent = require("../common/events");
   router.use("/readInternEmployee",require("./readInternEmployee"));
   router.use("/downloadSalaryReport",require("./downloadSalaryReport"));
   router.use("/downloadAttendanceReport",require("./downloadAttendanceReport"));
+  router.use("/dowmloadInvoiceReport",require("./dowmloadInvoiceReport"));
+
   router.post("/dummy",function (req,res) {
     var data={};
     data.engineerId = req.body.engineerId;
@@ -47,6 +48,7 @@ var deriveDataEvent = require("../common/events");
       res.send(setData);
     })
   });
+
   router.get("/searchEmployee/:searchKey/:cursor",function (req,res) {
     var temp ="*"+req.params.searchKey+"*";
     var cursor = req.params.cursor || "0";

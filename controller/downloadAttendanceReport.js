@@ -21,18 +21,18 @@ router.post("/", function(req, res) {
             "engineerName": "ABC",
             "engineerId": "40001EI",
             "attendanceData": [{
-                "date": "26 January 2017",
+                "date"  : "26 January 2017",
                 "reason": "Not Feeling"
             }, {
                 "date": "2 Feb 2017",
                 "reason": "Personal Work"
             }]
-        }
+        };
         var length = selectedCompany.length;
         var i = 0;
         var fileList = [];
 
-        var p = selectedCompany.forEach(function(value, key) {
+        selectedCompany.forEach(function(value, key) {
             var temp = {};
             temp.companyName = value.companyName;
             temp.engineerList = [];
@@ -58,56 +58,13 @@ router.post("/", function(req, res) {
                         } else {
                           i++;
                             if (i === length) {
-                              // console.log(fileList);
                               res.zip(fileList,'report.zip');
-                                /*var output = fs.createWriteStream('report.zip');
-                                // var archive = archiver('zip');
-                                var archive = archiver('zip', {
-                                    store: true // Sets the compression method to STORE.
-                                });
-
-                                // listen for all archive data to be written
-                                output.on('close', function() {
-                                  res.sendFile("report.zip");
-                                  // res.send("done");
-                                    console.log(archive.pointer() + ' total bytes');
-                                    console.log('archiver has been finalized and the output file descriptor has closed.');
-                                });
-                                // good practice to catch this error explicitly
-                                archive.on('error', function(err) {
-                                    throw err;
-                                });*/
-                                // archive.on('close', function() {
-                                //     // res.send("done");
-                                //     console.log(archive.pointer() + ' total bytes');
-                                //     console.log('archiver has been finalized and the output file descriptor has closed.');
-                                // });
-                                // // good practice to catch this error explicitly
-                                // archive.on('error', function(err) {
-                                //     throw err;
-                                // });
-
-
-                                // res.attachment('report.zip');
-                                /*archive.pipe(output);
-
-                                	fileList.forEach(function(value,key){
-                                	// archive.append(fs.createReadStream(value), { name: value });
-                                  archive.file(value, { name: path.basename(value)});
-
-                                	});
-
-                                  // archive.pipe(output);
-                                  archive.finalize();*/
                             }
                         }
                     });
                 mu.clearCache();
             });
         });
-        Promise.all([p]).then(function() {
-            console.log(done);
-        })
     } catch (e) {
         res.status(401).send("Bad Parameter or invalid token");
     }
