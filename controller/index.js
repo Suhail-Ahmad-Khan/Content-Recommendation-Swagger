@@ -36,7 +36,7 @@ var deriveDataEvent = require("../common/events");
   router.use("/readInternEmployee",require("./readInternEmployee"));
   router.use("/downloadSalaryReport",require("./downloadSalaryReport"));
   router.use("/downloadAttendanceReport",require("./downloadAttendanceReport"));
-  router.use("/dowmloadInvoiceReport",require("./dowmloadInvoiceReport"));
+  router.use("/downloadInvoiceReport",require("./downloadInvoiceReport"));
 
   router.post("/dummy",function (req,res) {
     var data={};

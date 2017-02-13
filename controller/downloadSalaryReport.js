@@ -3,7 +3,6 @@ var router = express.Router();
 var commonMethod = require("../common/commonMethod");
 var deriveDataEvent = require("../common/events");
 var json2csv = require('json2csv');
-var fs = require('fs');
 
 router.post("/", function(req, res) {
     try {
