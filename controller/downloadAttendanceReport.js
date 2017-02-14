@@ -58,6 +58,8 @@ router.post("/", function(req, res) {
                         } else {
                           i++;
                             if (i === length) {
+                              // res.header("Access-Control-Allow-Origin", "*");
+                              res.header("Access-Control-Expose-Headers" ,"Content-Disposition");
                               res.zip(fileList,'report.zip');
                             }
                         }

@@ -21,6 +21,7 @@ router.post("/", function(req, res) {
               var csvData = json2csv({ data, fields,fieldNames });
               res.setHeader('Content-disposition', 'attachment; filename=salaryReport.csv');
                 res.set('Content-Type', 'text/csv');
+                res.header("Access-Control-Expose-Headers" ,"Content-Disposition");
                 res.send(csvData);
     } catch (e) {
         res.status(401).send("Bad Parameter or invalid token");
