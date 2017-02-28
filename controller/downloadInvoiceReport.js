@@ -8,7 +8,7 @@ var path = require('path');
 
 router.post("/", function(req, res) {
     try {
-      console.log(req.body);
+
       var selectedCompany = req.body.selectedCompany;
       // commonMethod.verifyToken(req.header("x-token"));      //Authentcating users token
       var length = selectedCompany.length;

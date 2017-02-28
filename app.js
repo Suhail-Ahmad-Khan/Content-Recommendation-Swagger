@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿/**
  * Module dependencies.
  */
@@ -73,3 +74,53 @@ swagger.configure(applicationUrl, '1.0.0');
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
+=======
+var http = require('http'),
+    util = require('util'),
+    mu = require('mu2');
+// var fs = require('fs');
+var pdf = require('html-pdf');
+var mu2Express = require("mu2express");
+var express = require("express");
+var app = express();
+app.engine('mustache', mu2Express.engine);
+app.set('view engine', 'mustache');
+app.set('views', __dirname + '/views');
+var info = {
+        name: 'BridgeLabz',
+        description: 'Some Data ABout BridgeLabz',
+        terms: [{
+            name: 't1',
+            description: 'Some Data ABout BridgeLabz 1'
+        }, {
+            name: 't2',
+            description: 'Some Data ABout BridgeLabz 2'
+        }, ]
+    }
+
+app.get('/', function(req, res) {
+    //Renders the Views/index.mustache file with the view {'test': 'somevalue'} using the mu2 engine
+    res.render('index.html', info);
+    });
+app.listen(8080);
+var options = {
+    format: 'Letter'
+};
+
+// mu.root = __dirname + '/templates';
+
+    // http.createServer(function (req, res) {
+
+/*var stream = mu.compileAndRender('index.html', info);
+stream.on("data", function(data) {
+    console.log(data.toString());
+    pdf.create(data.toString(), options).toFile('./attendance/attendance.pdf', function(err, result) {
+        if (err) {
+            console.log("err",err);
+        } else {
+            console.log("Done");
+        }
+    });
+});*/
+// }).listen(8000);
+>>>>>>> 18e1833c76651d79012185b43e208b07e4c7b2da

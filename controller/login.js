@@ -5,7 +5,6 @@ var commonMethod = require("../common/commonMethod");
 
 router.post("/",function(req,res){
   try {
-	console.log(req.body);
     var email=req.body.emailId,password=req.body.password;
     firebase.auth().signInWithEmailAndPassword(email,password).catch(function(error) {
       res.status(401).send({token:null,status:401,message:"Unautherized User"});

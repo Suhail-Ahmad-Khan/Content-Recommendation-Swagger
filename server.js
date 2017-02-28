@@ -3,6 +3,7 @@ var cors = require('cors');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var jwt    = require('jsonwebtoken');
+
 var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
@@ -20,15 +21,24 @@ app.set('host', process.env.NODE_IP || 'localhost');
 // app.set('view engine', 'jade');
 
 
+var app = express();
+var fs = require("fs");
+
+app.set('port', process.env.NODE_PORT || 3000);
+app.set('host', process.env.NODE_IP || 'localhost');
+
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //app.use("/",express.static("./public")); //Angular
+
 app.use(morgan('common', {
     stream: fs.createWriteStream('./access.log', {flags: 'a'})
 }));
 app.use(morgan("dev"));
 app.use(require("./controller/index"));
+
 app.use("/api", subpath);
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -60,7 +70,6 @@ else
 // var applicationUrl = 'http://' + domain + ':' + app.get('port');
 var applicationUrl = 'http://' + domain;
 swagger.configure(applicationUrl, '1.0.0');
-
 
 app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

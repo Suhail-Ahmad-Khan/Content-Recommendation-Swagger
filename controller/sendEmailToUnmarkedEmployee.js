@@ -6,7 +6,7 @@ var deriveDataEvent = require("../common/events");
 router.post("/", function(req, res) {
     try {
         var temp = req.body;
-	console.log(temp);
+
         var timeStamp = temp.timeStamp;
         if(timeStamp===undefined || timeStamp===null || timeStamp===''){
           throw 400;
@@ -30,6 +30,7 @@ router.post("/", function(req, res) {
         });
         //sendMailTo()
     } catch (e) {
+
       if(e===400)
       res.status(400).send("Bad Request Parameter");
       else
