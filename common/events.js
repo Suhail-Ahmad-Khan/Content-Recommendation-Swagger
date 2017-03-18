@@ -3,14 +3,14 @@ var util = require('util');
 var firebase = require("../config/firebase.js");
 var redisClient = require('redis').createClient();
 var os = require('os');
-var ip = os.networkInterfaces().eth0[0].address;  //Retrieve the system IP address
+var ip = os.networkInterfaces().wlan1[0].address || os.networkInterfaces().eth0[0].address;  //Retrieve the system IP address
 // 14344, 'redis-14344.c10.us-east-1-4.ec2.cloud.redislabs.com', {no_ready_check: true}
 // 16385,"redis-16385.c11.us-east-1-3.ec2.cloud.redislabs.com",{no_ready_check: true}, hamidAbdul1994
 var imageUrl= "http://"+ip+":3000/image2.jpg";
 
 function custEvent() {
     var self = this;
-    EventEmitter.call(this); //Callable For event or trigger 
+    EventEmitter.call(this); //Callable For event or trigger
 }
 
 util.inherits(custEvent, EventEmitter); //Inherting the Event property in curretn class
@@ -34,7 +34,7 @@ custEvent.prototype.employeeSnapshot = function(tempObj, engineerId) {
             });
         } else {
             tempObj.employeeData = JSON.parse(employeeData[engineerId]);
-            tempObj.employeeData.imageUrl=imageUrl;`  `
+            tempObj.employeeData.imageUrl=imageUrl;
             myCustEvent.emit("employeeSnapshot", tempObj);
         }
     });
@@ -51,7 +51,7 @@ custEvent.prototype.createEmployeeLeave = function(engineerId, date) {
             myCustEvent.updateEmployeeLeaveSnapshot(engineerId);
             redisClient.hmset("employeeLeave", temp);
         } else {
-            var temp = JSON.parse(employeeData[date]);
+            var temp = JSON.parse(-[date]);
             if (temp.indexOf(engineerId) === -1) { //Avoid Duplicate
                 temp.push(engineerId);
                 var tempObj = {};
@@ -76,11 +76,11 @@ custEvent.prototype.readEmployeeSnapshot = function(engineerId) {
             var totalEmployee = Object.keys(employeeData).length;
             resolve({
                 "employeeSnapshot": obj,
-                totalEmployee
+                totalEmployee:totalEmployee
             });
         });
     });
-}
+};
 
 custEvent.prototype.searchEmployee = function() {
 
