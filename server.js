@@ -15,30 +15,25 @@ var fs = require("fs");
 var app = express();
 var subpath = express();
 
-app.set('port', process.env.NODE_PORT || 3000);
-app.set('host', process.env.NODE_IP || 'localhost');
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
-
+app.set('port', process.env.PORT || 3000);
+app.set('host', process.env.IP || 'localhost');
 
 var app = express();
 var fs = require("fs");
 
-app.set('port', process.env.NODE_PORT || 3000);
-app.set('host', process.env.NODE_IP || 'localhost');
-
+app.set('port', process.env.PORT || 3000);
+app.set('host', process.env.IP || 'localhost');
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-//app.use("/",express.static("./public")); //Angular
 
 app.use(morgan('common', {
     stream: fs.createWriteStream('./access.log', {flags: 'a'})
 }));
 app.use(morgan("dev"));
 app.use(require("./controller/index"));
-
+app.use("/web", express.static("./frontEnd"));
 app.use("/api", subpath);
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));

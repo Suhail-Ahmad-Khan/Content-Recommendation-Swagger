@@ -10,10 +10,10 @@ var imageUrl= "http://"+ip+":3000/image2.jpg";
 
 function custEvent() {
     var self = this;
-    EventEmitter.call(this);
+    EventEmitter.call(this); //Callable For event or trigger 
 }
 
-util.inherits(custEvent, EventEmitter);
+util.inherits(custEvent, EventEmitter); //Inherting the Event property in curretn class
 var myCustEvent = new custEvent();
 
 

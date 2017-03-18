@@ -26,7 +26,10 @@
     }, {
         "name": "Report",
         "description": "API for Engineer Report Downloading"
-    }],
+    },{
+	     "name" : "Search",
+	     "description" : "API for searching the engineer data."
+   }],
     "schemes": [
       "http",
       "https"
@@ -355,7 +358,7 @@
         "/searchEmployeeByName": {
             "get": {
                 "tags": [
-                    "Engineer"
+                    "Engineer","Search"
                 ],
                 "description": "It return the employee list with basic details",
                 "operationId": "for the URL",
@@ -363,6 +366,49 @@
                     "application/json"
                 ],
                 "parameters": [{
+                    "name": "x-token",
+                    "in": "header",
+                    "description": "You need to pass token along with your request.",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "response",
+                        "schema": {
+                            "$ref": "#/definitions/SEBNResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/searchEmployee/{searchKey}/{cursor}": {
+            "get": {
+                "tags": [
+                    "Engineer","Search"
+                ],
+                "description": "It return the employee list with basic details",
+                "operationId": "for the URL",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                  {
+                      "name": "searchKey",
+                      "in": "path",
+                      "description": "Here your will pass The seaching key eg,a.",
+                      "required": true,
+                      "type": "string"
+                  },
+                  {
+                      "name": "cursor",
+                      "in": "path",
+                      "description": "here you will pass the cursor key default is 0 next is retrieving from previous response",
+                      "default":0,
+                      "required": true,
+                      "type": "string"
+                  },
+                  {
                     "name": "x-token",
                     "in": "header",
                     "description": "You need to pass token along with your request.",

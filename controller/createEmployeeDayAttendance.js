@@ -6,10 +6,13 @@ var deriveDataEvent = require("../common/events");
 router.post("/", function(req, res) {
     try {
         var tempData = req.body;
+console.log(tempData);
         var temp = {};
         var keys = ["attendanceStatus","markedStatus","punchIn","punchOut","reason"];
         keys.forEach(function (k) {
-          if(tempData[k]===undefined || tempData[k]===null || tempData[k]=== ''){
+          if(tempData[k]===undefined || tempData[k]===null){
+	console.log("error1:",tempData[k]);
+	console.log("error2:",k);
             throw 400;
           }else {
             temp[k]=tempData[k];

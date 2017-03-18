@@ -6,8 +6,7 @@ var deriveDataEvent = require("../common/events");
 router.get("/",function(req,res){
 
   try {
-    var token = req.query.token,
-        engineerId = req.query.engineerId,
+    var engineerId = req.query.engineerId,
         timeStamp = req.query.timeStamp,
         date = commonMethod.getMonthTimeStamp(timeStamp),
         time = date.split("/"),
@@ -23,7 +22,7 @@ router.get("/",function(req,res){
 
         if(time[0]<today[0] || (time[0]<=today[0] && commonMethod.month.indexOf(time[1])<=commonMethod.month.indexOf(today[1]))){
         commonMethod.readEmployeeAttendance(engineerId,date).then(function(data){
-          var tempObj={token};
+          var tempObj={};
           tempObj.attendanceData=data;
           deriveDataEvent.employeeSnapshot(tempObj,engineerId);
           deriveDataEvent.once("employeeSnapshot",function(obj){

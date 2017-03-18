@@ -48,22 +48,26 @@ var deriveDataEvent = require("../common/events");
     data.city = req.body.city;
     deriveDataEvent.dummy(JSON.stringify(data)).then(function (setData) {
       res.send(setData);
-    })
+    });
   });
 
 
   app.get("/searchEmployee/:searchKey/:cursor",function (req,res) {
-
+try {
     var temp ="*"+req.params.searchKey+"*";
     var cursor = req.params.cursor || "0";
     deriveDataEvent.searchDummy(temp,cursor).then(function (data) {
       var tempData = data.searchKey.map(function (itm) {
         return JSON.parse(itm);
       });
-        res.send({"searchValue":tempData,"cursor":data.cursor});
-    })
+      var no = Number.parseInt(data.cursor);
+        res.send({"engineerList":tempData,"cursor":no});
+    });
+} catch (e) {
+  console.log(e);
+  res.status(500).send("error");
+}
   });
 
 
 module.exports = app;
-
