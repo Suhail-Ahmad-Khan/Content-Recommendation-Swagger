@@ -10,6 +10,7 @@
     "body-parser": "^1.16.1",
     "cors": "^2.8.1",
     "express": "~4.13.4",
+    "minimist": "^1.2.0",
     "stylus": "*",
     "swagger-node-express": "~2.0",
     "url": "^0.11.0"
